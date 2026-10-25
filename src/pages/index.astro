@@ -9,7 +9,12 @@ import IndustryBanner from "../components/IndustryBanner.astro";
 import CatalogCta from "../components/home/CatalogCta.astro";
 import CompanyAdvantages from "../components/CompanyAdvantages.astro";
 import { companyInfo } from "../data/site";
+import { getImage } from "astro:assets";
+import logo from "../assets/images/brand/cedid-logo.png";
 import { getScene } from "../lib/images";
+
+const site = Astro.site ?? Astro.url;
+const logoImage = await getImage({ src: logo, width: 600, format: "png" });
 
 // Yalnızca doğrulanmış firma bilgileriyle kurum yapılandırılmış verisi
 const organization = {
@@ -18,7 +23,8 @@ const organization = {
   name: companyInfo.legalName,
   alternateName: companyInfo.name,
   slogan: companyInfo.slogan,
-  url: Astro.site?.href,
+  url: site.href,
+  logo: new URL(logoImage.src, site).href,
   email: companyInfo.email,
   telephone: companyInfo.phones.map((phone) => phone.href.replace("tel:", "")),
   sameAs: [companyInfo.instagram.url],
