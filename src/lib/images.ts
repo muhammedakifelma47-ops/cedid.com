@@ -77,12 +77,6 @@ function findPublicFile(dir: string, baseNames: string[], extensions: string[]):
   return undefined;
 }
 
-const imageExtensions = ["svg", "png", "webp", "jpg", "jpeg"];
-
-/** Açık zemin logosu: public/images/brand/cedid-logo.(svg|png|webp|jpg) */
-export const brandLogo = findPublicFile("images/brand", ["cedid-logo"], imageExtensions);
-/** Koyu zemin (footer) logosu: public/images/brand/cedid-logo-beyaz.* — yoksa açık zemin logosu beyaz kutuda gösterilir */
-export const brandLogoLight = findPublicFile("images/brand", ["cedid-logo-beyaz"], imageExtensions);
 /** Gerçek mağaza fotoğrafı: public/images/kurumsal/magaza.(jpg|webp|png) */
 export const storePhoto = findPublicFile("images/kurumsal", ["magaza"], ["jpg", "jpeg", "webp", "png"]);
 /** E-katalog PDF: public/katalog/cedid-e-katalog.pdf */

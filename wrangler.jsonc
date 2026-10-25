@@ -1,0 +1,14 @@
+// Cloudflare Workers yapılandırması: site statik olarak derlenir ve dist/ klasörü
+// Workers Static Assets ile yayınlanır. Sunucu tarafı kod veya Astro adaptörü gerekmez.
+// Bu dosya, "npx wrangler deploy" komutunun projeyi otomatik yapılandırmaya
+// (astro add cloudflare + wrangler kurulumu) çalışmasını engeller.
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "cedid-com",
+  "compatibility_date": "2026-10-20",
+  "assets": {
+    "directory": "./dist",
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "404-page"
+  }
+}

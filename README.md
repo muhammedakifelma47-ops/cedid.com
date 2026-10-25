@@ -68,14 +68,12 @@ Aşağıdaki dosyalar eklendiğinde bir sonraki derlemede otomatik olarak kullan
 
 | Dosya | Kullanıldığı yer |
 | --- | --- |
-| `public/images/brand/cedid-logo.svg` (veya `.png`, `.webp`) | Navbar ve genel logo. Dosya yokken metin yer tutucu görünür. |
-| `public/images/brand/cedid-logo-beyaz.svg` (isteğe bağlı) | Footer ve koyu zeminler. Yoksa normal logo beyaz kutu içinde gösterilir. |
 | `public/images/kurumsal/magaza.jpg` | Hakkımızda sayfasındaki gerçek mağaza fotoğrafı. Yoksa marka paneli gösterilir. |
 | `public/katalog/cedid-e-katalog.pdf` | E-Katalog sayfasında görüntüleme, yeni sekmede açma ve indirme. Yoksa bilgilendirme gösterilir. |
 
 ## Eksik gerçek bilgi ve görseller
 
-- **Orijinal logo dosyası** projede yoktu. Logo yeniden çizilmedi. Şu an firma adını gösteren sade bir metin yer tutucu kullanılıyor ve favicon basit bir "C" işaretidir.
+- **Şeffaf veya beyaz logo:** Firmanın logosu beyaz zeminli bir JPEG olduğu için koyu alanlarda (footer, lacivert paneller) beyaz bir kart içinde gösteriliyor. Şeffaf zeminli PNG/SVG veya beyaz renkli bir sürüm sağlanırsa koyu zeminlerde doğrudan kullanılabilir.
 - **Gerçek mağaza fotoğrafı** projede yoktu. Hakkımızda sayfası fotoğraf eklenene kadar marka panelini gösterir.
 - **E-katalog PDF dosyası** yok.
 - **Doğrulanmış şirket adresi** yok; adres ve harita alanı gösterilmiyor.
@@ -85,6 +83,25 @@ Aşağıdaki dosyalar eklendiğinde bir sonraki derlemede otomatik olarak kullan
 - **Doğrulanmamış iddialar kullanılmadı:** referans tasarımdaki "30+ yıl", "1000+ müşteri", "5000+ ürün" ve "7/24 destek" istatistikleri, adres ve "Fiyat Talep Et" alanları bilinçli olarak çıkarıldı.
 - **Hukuki metinler:** `/gizlilik` sayfası yalnızca sitenin teknik işleyişini anlatan bir bilgilendirmedir. Resmî KVKK aydınlatma metni firma tarafından hazırlanmalıdır. Siteye analiz veya çerez aracı eklenirse bu sayfa güncellenmelidir.
 - **Alan adı:** `https://cedid.com.tr` varsayıldı.
+
+## Logo
+
+- Firma logosunun orijinali `public/images/logo/cedid-logo.jpeg` dosyasıdır.
+- Sitede kullanılan `src/assets/images/brand/cedid-logo.png`, bu dosyanın yalnızca beyaz kenar boşlukları kırpılmış hâlidir. Logo yeniden çizilmemiş, rengi ve oranı değiştirilmemiştir. Derleme sırasında WebP olarak optimize edilir.
+- `public/favicon-32.png`, `public/favicon-192.png` ve `public/apple-touch-icon.png` aynı logodan üretilmiştir.
+- Logo değişirse bu üç dosya ve kırpılmış PNG yeniden üretilmelidir.
+
+## Cloudflare'de yayın
+
+Site Cloudflare Workers Static Assets ile yayınlanır. Ayarlar `wrangler.jsonc` dosyasındadır.
+
+| Ayar | Değer |
+| --- | --- |
+| Derleme komutu | `pnpm run build` |
+| Deploy komutu | `npx wrangler deploy` |
+| Çıktı klasörü | `dist` (wrangler.jsonc içinde tanımlı) |
+
+`wrangler.jsonc` dosyası silinmemelidir. Bu dosya yoksa `wrangler deploy` projeyi otomatik yapılandırmaya çalışır ve pnpm'in derleme betiği güvenliği nedeniyle `ERR_PNPM_IGNORED_BUILDS` hatasıyla durur. Wrangler'ı `package.json` içine bağımlılık olarak eklemeyin; aynı hata bu kez kurulum adımında çıkar.
 
 ## Notlar
 
