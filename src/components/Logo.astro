@@ -1,0 +1,53 @@
+---
+/**
+ * Cedid Ambalaj logosu.
+ *
+ * Orijinal logo dosyası public/images/brand/cedid-logo.(svg|png|webp|jpg) konumuna eklendiğinde
+ * otomatik olarak kullanılır ve en-boy oranı korunur. Koyu zemin için
+ * public/images/brand/cedid-logo-beyaz.* eklenebilir.
+ *
+ * Dosya henüz eklenmediyse logo yeniden çizilmez; yalnızca firma adını gösteren
+ * sade bir metin yer tutucu gösterilir.
+ */
+import { brandLogo, brandLogoLight } from "../lib/images";
+import { companyInfo } from "../data/site";
+
+interface Props {
+  /** "light": koyu zemin (footer) için */
+  variant?: "default" | "light";
+  class?: string;
+}
+
+const { variant = "default", class: className } = Astro.props;
+const alt = companyInfo.legalName;
+const lightSrc = brandLogoLight;
+const src = variant === "light" ? (lightSrc ?? brandLogo) : brandLogo;
+const needsWhiteBox = variant === "light" && !lightSrc && Boolean(brandLogo);
+---
+
+{
+  src ? (
+    <span class:list={["inline-flex items-center", needsWhiteBox && "rounded bg-white px-3 py-2", className]}>
+      <img src={src} alt={alt} class="block h-full w-auto object-contain" decoding="async" />
+    </span>
+  ) : (
+    <span
+      class:list={["inline-flex flex-col justify-center leading-none", className]}
+      role="img"
+      aria-label={alt}
+    >
+      <span
+        class:list={[
+          "text-[30px] font-black tracking-[-0.03em] sm:text-[34px]",
+          variant === "light" ? "text-white" : "text-navy",
+        ]}
+      >
+        Cedid
+      </span>
+      <span class="mt-1 flex items-baseline gap-1.5 text-[11px] font-bold uppercase tracking-[0.16em]">
+        <span class={variant === "light" ? "text-white/85" : "text-navy-deep"}>Ambalaj</span>
+        <span class={variant === "light" ? "text-white/60" : "text-bordo"}>Tic. Ltd. Şti.</span>
+      </span>
+    </span>
+  )
+}

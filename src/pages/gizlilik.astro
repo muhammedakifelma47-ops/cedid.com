@@ -1,0 +1,49 @@
+---
+import SiteLayout from "../layouts/SiteLayout.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import { companyInfo } from "../data/site";
+---
+
+<SiteLayout
+  title="Gizlilik Bilgilendirmesi | Cedid Ambalaj"
+  description="Cedid Ambalaj web sitesinin kişisel veri, çerez ve dış bağlantı kullanımına ilişkin bilgilendirme."
+>
+  <Breadcrumbs items={[{ label: "Gizlilik Bilgilendirmesi" }]} />
+
+  <article class="container-site max-w-[860px] py-12 lg:py-16">
+    <h1 class="text-[34px] font-black leading-tight lg:text-[42px]">Gizlilik Bilgilendirmesi</h1>
+    <span class="mt-4 block h-[3px] w-14 bg-bordo" aria-hidden="true"></span>
+
+    <div class="prose-cedid mt-8 space-y-8 text-[16px]">
+      <section>
+        <h2 class="mb-3 text-[21px] font-bold">Bu web sitesi hakkında</h2>
+        <p>
+          Bu web sitesi, {companyInfo.legalName} ürün gruplarını ve iletişim bilgilerini tanıtmak amacıyla hazırlanmış bir
+          katalog sitesidir. Sitede üyelik, sipariş, ödeme veya form doldurma işlemi bulunmaz.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="mb-3 text-[21px] font-bold">Kişisel veriler ve çerezler</h2>
+        <p>
+          Site üzerinden ad, telefon veya e-posta gibi kişisel bilgiler toplanmaz. Site, ziyaretçi takibi veya reklam amaçlı
+          çerez ve analiz aracı kullanmaz. Yazı tipleri ve görseller sitenin kendi sunucusundan yüklenir.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="mb-3 text-[21px] font-bold">Dış bağlantılar ve iletişim</h2>
+        <p>
+          Telefon numaraları cihazınızın arama uygulamasını, e-posta adresi e-posta uygulamanızı açar. Instagram bağlantısı
+          Instagram web sitesine yönlendirir ve bu hizmetin kendi gizlilik koşullarına tabidir.
+        </p>
+        <p>
+          Bizimle telefon veya e-posta yoluyla paylaştığınız bilgiler yalnızca talebinize yanıt vermek amacıyla kullanılır. Bu
+          konudaki sorularınız için <a href={`mailto:${companyInfo.email}`} class="font-medium text-bordo hover:underline"
+            >{companyInfo.email}</a
+          > adresine yazabilirsiniz.
+        </p>
+      </section>
+    </div>
+  </article>
+</SiteLayout>

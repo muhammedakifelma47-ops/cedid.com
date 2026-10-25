@@ -1,0 +1,104 @@
+---
+import SiteLayout from "../layouts/SiteLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import Icon from "../components/Icon.astro";
+import { companyInfo } from "../data/site";
+import { getScene } from "../lib/images";
+---
+
+<SiteLayout
+  title="İletişim | Cedid Ambalaj"
+  description="Cedid Ambalaj ile telefon, e-posta veya Instagram üzerinden doğrudan iletişime geçin: 0552 799 2056, 0539 727 0954, 0530 527 0183, info@cedid.com.tr."
+  image={getScene("depo-koridor")}
+>
+  <PageHero
+    eyebrow={companyInfo.legalName}
+    title="İletişim"
+    description="Ürün gruplarımız hakkında bilgi almak için bizimle doğrudan iletişime geçebilirsiniz."
+    image={getScene("depo-koridor")}
+    imageAlt="Depo koridoru (temsili görsel)"
+    breadcrumbs={[{ label: "İletişim" }]}
+  />
+
+  <section class="container-site py-12 lg:py-16" aria-label="İletişim bilgileri">
+    <div class="grid gap-6 lg:grid-cols-3">
+      <article class="rounded-md border border-line bg-white p-7 lg:p-8">
+        <span class="grid size-14 place-items-center rounded-full bg-bordo text-white">
+          <Icon name="phone" size={24} />
+        </span>
+        <h2 class="mt-6 text-[22px] font-bold">Telefon</h2>
+        <p class="mt-1.5 text-[14.5px] text-muted">Aramak için numaraya dokunun.</p>
+        <ul class="mt-5 space-y-3">
+          {
+            companyInfo.phones.map((phone) => (
+              <li>
+                <a
+                  href={phone.href}
+                  class="flex items-center justify-between rounded border border-line px-4 py-3.5 text-[18px] font-bold text-navy-deep transition-colors hover:border-bordo hover:text-bordo"
+                >
+                  {phone.display}
+                  <Icon name="arrow-right" size={18} />
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </article>
+
+      <article class="rounded-md border border-line bg-white p-7 lg:p-8">
+        <span class="grid size-14 place-items-center rounded-full bg-navy-deep text-white">
+          <Icon name="mail" size={24} />
+        </span>
+        <h2 class="mt-6 text-[22px] font-bold">E-posta</h2>
+        <p class="mt-1.5 text-[14.5px] text-muted">E-posta uygulamanızda yeni bir ileti açılır.</p>
+        <a
+          href={`mailto:${companyInfo.email}`}
+          class="mt-5 flex items-center justify-between rounded border border-line px-4 py-3.5 text-[18px] font-bold text-navy-deep transition-colors hover:border-bordo hover:text-bordo"
+        >
+          {companyInfo.email}
+          <Icon name="arrow-right" size={18} />
+        </a>
+      </article>
+
+      <article class="rounded-md border border-line bg-white p-7 lg:p-8">
+        <span class="grid size-14 place-items-center rounded-full bg-bordo text-white">
+          <Icon name="instagram" size={24} />
+        </span>
+        <h2 class="mt-6 text-[22px] font-bold">Instagram</h2>
+        <p class="mt-1.5 text-[14.5px] text-muted">Güncel paylaşımlarımızı takip edin.</p>
+        <a
+          href={companyInfo.instagram.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="mt-5 flex items-center justify-between rounded border border-line px-4 py-3.5 text-[18px] font-bold text-navy-deep transition-colors hover:border-bordo hover:text-bordo"
+        >
+          {companyInfo.instagram.username}
+          <Icon name="external-link" size={18} />
+          <span class="sr-only">(yeni sekmede açılır)</span>
+        </a>
+      </article>
+    </div>
+
+    {
+      companyInfo.address && (
+        <article class="mt-6 rounded-md border border-line bg-white p-7 lg:p-8">
+          <h2 class="text-[22px] font-bold">Adres</h2>
+          <p class="mt-3 text-[16px] text-ink">{companyInfo.address}</p>
+        </article>
+      )
+    }
+
+    <div class="mt-10 flex flex-col gap-5 rounded-md bg-navy-deep p-7 text-white sm:flex-row sm:items-center sm:justify-between lg:p-10">
+      <div class="flex items-center gap-5">
+        <Icon name="catalog" size={44} strokeWidth={1.4} class="hidden shrink-0 sm:block" />
+        <p class="text-[18px] font-medium leading-relaxed lg:text-[20px]">
+          Ürünlerimizi incelemek için kataloğumuzu ziyaret edebilirsiniz.
+        </p>
+      </div>
+      <a href="/urunlerimiz" class="btn-white shrink-0">
+        Ürün Kataloğunu Gör
+        <Icon name="arrow-right" size={17} />
+      </a>
+    </div>
+  </section>
+</SiteLayout>

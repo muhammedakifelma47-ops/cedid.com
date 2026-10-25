@@ -1,0 +1,113 @@
+---
+import Icon from "./Icon.astro";
+import { categories, categoryHref, getProductsByCategory, type CategorySlug } from "../data/catalog";
+import { companyInfo } from "../data/site";
+
+interface Props {
+  active?: CategorySlug;
+}
+
+const { active } = Astro.props;
+---
+
+<!-- Mobil: yatay kaydırılabilir kategori listesi -->
+<nav aria-label="Ürün grupları" class="-mx-4 overflow-x-auto px-4 pb-1 sm:-mx-6 sm:px-6 lg:hidden">
+  <ul class="flex min-w-max gap-2">
+    <li>
+      <a
+        href="/urunlerimiz"
+        class:list={[
+          "inline-flex items-center gap-2 rounded-full border px-4 py-2.5 text-[14px] font-medium",
+          !active ? "border-bordo bg-bordo text-white" : "border-line bg-white text-navy-deep",
+        ]}
+        aria-current={!active ? "page" : undefined}
+      >
+        Tüm Ürün Grupları
+      </a>
+    </li>
+    {
+      categories.map((category) => (
+        <li>
+          <a
+            href={categoryHref(category.slug)}
+            class:list={[
+              "inline-flex items-center gap-2 rounded-full border px-4 py-2.5 text-[14px] font-medium",
+              active === category.slug ? "border-bordo bg-bordo text-white" : "border-line bg-white text-navy-deep",
+            ]}
+            aria-current={active === category.slug ? "page" : undefined}
+          >
+            <Icon name={category.icon} size={17} />
+            {category.name}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</nav>
+
+<!-- Masaüstü: kenar menü -->
+<aside class="hidden lg:block">
+  <div class="sticky top-[116px] space-y-5">
+    <nav aria-label="Ürün grupları" class="overflow-hidden rounded-md border border-line bg-white">
+      <p class="bg-navy-deep px-5 py-4 text-[15px] font-bold text-white">Ürün Grupları</p>
+      <ul>
+        <li class="border-b border-line">
+          <a
+            href="/urunlerimiz"
+            class:list={[
+              "flex items-center gap-3 border-l-[3px] px-5 py-3.5 text-[14.5px] font-medium transition-colors hover:bg-light",
+              !active ? "border-bordo bg-light text-bordo" : "border-transparent text-navy-deep",
+            ]}
+            aria-current={!active ? "page" : undefined}
+          >
+            <Icon name="layers" size={19} class="text-navy" />
+            Tüm Ürün Grupları
+          </a>
+        </li>
+        {
+          categories.map((category) => (
+            <li class="border-b border-line last:border-b-0">
+              <a
+                href={categoryHref(category.slug)}
+                class:list={[
+                  "flex items-center gap-3 border-l-[3px] px-5 py-3.5 text-[14.5px] font-medium transition-colors hover:bg-light",
+                  active === category.slug ? "border-bordo bg-light text-bordo" : "border-transparent text-navy-deep",
+                ]}
+                aria-current={active === category.slug ? "page" : undefined}
+              >
+                <Icon name={category.icon} size={19} class="text-navy" />
+                <span class="flex-1">{category.name}</span>
+                <span class="rounded-full bg-light px-2 py-0.5 text-[12px] text-muted">
+                  {getProductsByCategory(category.slug).length}
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="rounded-md bg-bordo p-5 text-white">
+      <p class="text-[16px] font-bold">Ürün bilgisi alın</p>
+      <p class="mt-1.5 text-[13.5px] leading-relaxed text-white/85">
+        Ürün çeşitleri ve uygun seçenekler için bizimle doğrudan iletişime geçebilirsiniz.
+      </p>
+      <ul class="mt-4 space-y-2 text-[14px]">
+        {
+          companyInfo.phones.map((phone) => (
+            <li>
+              <a href={phone.href} class="inline-flex items-center gap-2 hover:underline">
+                <Icon name="phone" size={15} /> {phone.display}
+              </a>
+            </li>
+          ))
+        }
+        <li>
+          <a href={`mailto:${companyInfo.email}`} class="inline-flex items-center gap-2 hover:underline">
+            <Icon name="mail" size={15} /> {companyInfo.email}
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</aside>

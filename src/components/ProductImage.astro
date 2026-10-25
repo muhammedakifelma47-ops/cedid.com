@@ -1,0 +1,48 @@
+---
+/**
+ * Ürün görseli. Ürünün kendi görseli yoksa tasarımı bozmayan, kategori ikonlu
+ * bir yedek alan gösterilir. Gerçek ürün fotoğrafı
+ * src/assets/images/products/<kategori>/<urun-slug>.jpg olarak eklendiğinde otomatik kullanılır.
+ */
+import { Image } from "astro:assets";
+import Icon from "./Icon.astro";
+import type { Product } from "../data/catalog";
+import { getCategory } from "../data/catalog";
+import { getProductImage } from "../lib/images";
+
+interface Props {
+  product: Product;
+  /** Görselin kapsayıcıdaki genişlik ipucu */
+  sizes: string;
+  widths?: number[];
+  class?: string;
+  priority?: boolean;
+}
+
+const { product, sizes, widths = [320, 480, 720], class: className, priority = false } = Astro.props;
+const image = getProductImage(product.category, product.slug);
+const category = getCategory(product.category);
+---
+
+<div class:list={["relative overflow-hidden bg-light", className]}>
+  {
+    image ? (
+      <Image
+        src={image}
+        alt={`${product.name} (temsili görsel)`}
+        widths={widths}
+        sizes={sizes}
+        priority={priority}
+        class="product-photo h-full w-full object-cover transition-transform duration-500"
+      />
+    ) : (
+      <div class="flex h-full w-full flex-col items-center justify-center gap-3 bg-[linear-gradient(135deg,var(--color-light),#e9ecf1)] p-4 text-center">
+        <span class="grid size-16 place-items-center rounded-full border border-navy/15 bg-white text-navy">
+          <Icon name={category?.icon ?? "package"} size={30} strokeWidth={1.4} />
+        </span>
+        <span class="text-[13px] font-medium text-navy-deep/70">{product.name}</span>
+        <span class="sr-only">Bu ürün için henüz görsel eklenmemiştir.</span>
+      </div>
+    )
+  }
+</div>

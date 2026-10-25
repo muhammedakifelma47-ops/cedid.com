@@ -1,0 +1,62 @@
+---
+import Icon from "./Icon.astro";
+import ProductImage from "./ProductImage.astro";
+import type { Product } from "../data/catalog";
+import { productHref } from "../data/catalog";
+
+interface Props {
+  product: Product;
+  /** "grid": dikey kart, "list": yatay kompakt kart */
+  variant?: "grid" | "list";
+  groupLabel?: string;
+  headingLevel?: "h2" | "h3" | "h4";
+}
+
+const { product, variant = "grid", groupLabel, headingLevel: Heading = "h3" } = Astro.props;
+const href = productHref(product);
+---
+
+{
+  variant === "grid" ? (
+    <a
+      href={href}
+      class="product-card group flex h-full flex-col overflow-hidden rounded-md border border-line bg-white transition-shadow hover:shadow-card"
+    >
+      <ProductImage
+        product={product}
+        class="aspect-[4/3]"
+        sizes="(min-width: 1280px) 300px, (min-width: 640px) 45vw, 100vw"
+      />
+      <div class="flex flex-1 flex-col p-5">
+        {groupLabel && <p class="text-[12px] font-bold uppercase tracking-[0.08em] text-bordo">{groupLabel}</p>}
+        <Heading class="mt-1.5 text-[17px] font-bold leading-snug text-navy-deep group-hover:text-bordo">{product.name}</Heading>
+        <p class="mt-2 flex-1 text-[14px] leading-relaxed text-muted">{product.shortDescription}</p>
+        <span class="link-arrow mt-4 text-[14px]">
+          Ürün Detayı
+          <Icon name="arrow-right" size={16} />
+        </span>
+      </div>
+    </a>
+  ) : (
+    <a
+      href={href}
+      class="product-card group flex h-full items-stretch overflow-hidden rounded-md border border-line bg-white transition-shadow hover:shadow-card"
+    >
+      <ProductImage product={product} class="w-28 shrink-0 sm:w-36" sizes="144px" widths={[160, 288]} />
+      <div class="flex min-w-0 flex-1 flex-col justify-center gap-1.5 px-4 py-4 sm:px-5">
+        <Heading class="text-[16px] font-bold leading-snug text-navy-deep group-hover:text-bordo">{product.name}</Heading>
+        <p class="text-[13.5px] leading-snug text-muted">{product.shortDescription}</p>
+        <span class="link-arrow mt-1 text-[13.5px]">
+          Ürün Detayı
+          <Icon name="arrow-right" size={15} />
+        </span>
+      </div>
+    </a>
+  )
+}
+
+<style>
+  .product-card:hover :global(.product-photo) {
+    transform: scale(1.04);
+  }
+</style>

@@ -1,0 +1,197 @@
+---
+import SiteLayout from "../layouts/SiteLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import SolutionRow from "../components/SolutionRow.astro";
+import ProductCategoryGrid from "../components/ProductCategoryGrid.astro";
+import ContactStrip from "../components/ContactStrip.astro";
+import Icon, { type IconKey } from "../components/Icon.astro";
+import { categoryHref } from "../data/catalog";
+import { pickProducts } from "../lib/pick";
+import { getScene, getProductImage, getCategoryImage, getGroupImage } from "../lib/images";
+
+const needs: { icon: IconKey; title: string; text: string }[] = [
+  {
+    icon: "package",
+    title: "Paketleme ve sevkiyat",
+    text: "Ürünlerin korunması, paletlenmesi ve sevkiyata hazırlanması için ambalaj malzemeleri.",
+  },
+  {
+    icon: "spray",
+    title: "Üretim alanı temizliği",
+    text: "Geniş alanlar, ortak kullanım alanları ve personel alanları için temizlik ve hijyen ürünleri.",
+  },
+  {
+    icon: "pen",
+    title: "İdari birimler",
+    text: "Ofis, muhasebe ve sevkiyat birimlerinin günlük kırtasiye ve evrak ihtiyaçları.",
+  },
+  {
+    icon: "coffee",
+    title: "Çalışan ikram alanları",
+    text: "Yemekhane, dinlenme ve toplantı alanları için çay, kahve ve şeker.",
+  },
+];
+
+const rows = [
+  {
+    id: "ambalaj",
+    title: "Ambalaj Ürünleri",
+    description:
+      "Koli, streç film, bant ve çemberleme ürünleri; üretimden sevkiyata kadar ürünlerin korunması, paketlenmesi ve paletlenmesi için kullanılır.",
+    image: getProductImage("ambalaj", "makine-tipi-strec-film")!,
+    imageAlt: "Streç sarma makinesinde sarılan palet (temsili görsel)",
+    products: pickProducts("ambalaj", [
+      "koli-ve-karton-kutular",
+      "palet-strec-filmi",
+      "makine-tipi-strec-film",
+      "koli-bantlari",
+      "cemberleme-urunleri",
+      "paletleme-malzemeleri",
+    ]),
+    link: { href: categoryHref("ambalaj"), label: "Ambalaj ürünlerini incele" },
+  },
+  {
+    id: "endustriyel-temizlik",
+    title: "Endüstriyel Temizlik Ürünleri",
+    description:
+      "Üretim alanları, depolar ve ortak kullanım alanlarının düzenli temizliği için temizlik ürünleri, ekipmanlar ve hijyen malzemeleri.",
+    image: getScene("endustriyel-temizlik"),
+    imageAlt: "Bir üretim tesisinde ekipman temizliği (temsili görsel)",
+    products: pickProducts("temizlik", [
+      "endustriyel-temizlik-urunleri",
+      "genel-temizlik-urunleri",
+      "mop-ve-paspaslar",
+      "temizlik-arabalari",
+      "atik-kovalari",
+      "el-hijyeni-urunleri",
+    ]),
+    link: { href: categoryHref("temizlik"), label: "Temizlik ürünlerini incele" },
+  },
+  {
+    id: "ofis-kirtasiye",
+    title: "Ofis ve Kırtasiye Ürünleri",
+    description:
+      "İdari ofisler, sevkiyat ve kalite birimlerinde kullanılan kağıt, dosyalama ve yazım gereçleri.",
+    image: getCategoryImage("ofis-kirtasiye"),
+    imageAlt: "Masa üzerinde çeşitli ofis ve kırtasiye ürünleri (temsili görsel)",
+    products: pickProducts("ofis-kirtasiye", [
+      "a4-fotokopi-kagidi",
+      "klasorler",
+      "dosyalar",
+      "kalemler",
+      "yazici-sarf-malzemeleri",
+      "zimbalar-ve-zimba-telleri",
+    ]),
+    link: { href: categoryHref("ofis-kirtasiye"), label: "Ofis ürünlerini incele" },
+  },
+  {
+    id: "cay-kahve-seker",
+    title: "Çay, Kahve ve Şeker",
+    description: "Yemekhane, dinlenme alanları ve toplantı odaları için temel içecek ve ikram ürünleri.",
+    image: getGroupImage("cay")!,
+    imageAlt: "İnce belli bardakta çay (temsili görsel)",
+    products: pickProducts("gida", ["dokme-cay", "demlik-poset-cay", "filtre-kahve", "kup-seker"]),
+    link: { href: categoryHref("gida"), label: "Gıda ürünlerini incele" },
+  },
+];
+---
+
+<SiteLayout
+  title="Fabrikalar İçin Tedarik | Cedid Ambalaj"
+  description="Fabrikaların ihtiyaç duyduğu ambalaj, endüstriyel temizlik, ofis ve kırtasiye ile çay, kahve ve şeker ürün gruplarını tek katalogda inceleyin."
+  image={getScene("fabrika-hero")}
+>
+  <PageHero
+    eyebrow="Sektörel Çözümler"
+    title="Fabrikalar İçin Güvenilir Tedarik"
+    description="Üretim ve operasyon süreçlerinde ihtiyaç duyulan ambalaj, temizlik, ofis ve kırtasiye ürün gruplarını tek bir katalog üzerinden inceleyin."
+    image={getScene("fabrika-hero")}
+    imageAlt="Paletlerle dolu yüksek raflı bir depo koridoru (temsili görsel)"
+    breadcrumbs={[{ label: "Fabrikalar İçin" }]}
+  >
+    <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+      <a href="/urunlerimiz" class="btn-primary">
+        Ürün Kataloğunu Gör
+        <Icon name="arrow-right" size={17} />
+      </a>
+      <a href="#iletisim" class="btn-outline-light">Bilgi Alın</a>
+    </div>
+  </PageHero>
+
+  <section class="container-site py-14 lg:py-20" aria-labelledby="ihtiyaclar-baslik">
+    <div class="grid gap-10 lg:grid-cols-[1fr_1.4fr] lg:gap-16">
+      <div>
+        <p class="eyebrow">01</p>
+        <h2 id="ihtiyaclar-baslik" class="section-title mt-2">Fabrikaların Tedarik İhtiyaçları</h2>
+        <span class="mt-4 block h-[3px] w-14 bg-bordo" aria-hidden="true"></span>
+        <p class="mt-5 text-[16px] leading-relaxed text-muted">
+          Bir fabrikada ürün ihtiyacı yalnızca üretim hattıyla sınırlı değildir. Paketleme, sevkiyat, temizlik, idari birimler ve
+          çalışan alanları farklı ürün gruplarına ihtiyaç duyar. Cedid Ambalaj bu ürün gruplarını tek bir katalogda bir araya
+          getirir.
+        </p>
+      </div>
+      <ul class="grid gap-4 sm:grid-cols-2">
+        {
+          needs.map((need) => (
+            <li class="rounded-md border border-line bg-white p-6">
+              <Icon name={need.icon} size={36} strokeWidth={1.4} class="text-navy" />
+              <h3 class="mt-4 text-[17px] font-bold">{need.title}</h3>
+              <p class="mt-2 text-[14.5px] leading-relaxed text-muted">{need.text}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <div class="bg-light py-14 lg:py-20">
+    <div class="container-site space-y-16 lg:space-y-24">
+      {rows.map((row, index) => <SolutionRow {...row} index={index + 2} reverse={index % 2 === 1} />)}
+    </div>
+  </div>
+
+  <section class="container-site py-14 lg:py-20" aria-labelledby="duzenli-tedarik-baslik">
+    <div class="grid overflow-hidden rounded-md bg-navy-deep text-white lg:grid-cols-[1.2fr_1fr]">
+      <div class="p-8 lg:p-12">
+        <p class="text-[13px] font-bold uppercase tracking-[0.1em] text-white/70">06</p>
+        <h2 id="duzenli-tedarik-baslik" class="mt-2 text-[28px] font-bold text-white lg:text-[34px]">Düzenli Ürün Tedariki</h2>
+        <p class="mt-4 text-[16px] leading-relaxed text-white/85">
+          Üretim yapan işletmelerde ambalaj, temizlik ve sarf ürünleri düzenli olarak yenilenir. İhtiyaç duyduğunuz ürün
+          gruplarını ve kullanım sıklığınızı bizimle paylaşarak tedarik planınızı birlikte değerlendirebiliriz.
+        </p>
+      </div>
+      <ul class="grid content-center gap-4 border-t border-white/10 p-8 lg:border-l lg:border-t-0 lg:p-12">
+        {
+          [
+            { icon: "clipboard", text: "İhtiyaç duyulan ürün gruplarının belirlenmesi" },
+            { icon: "calendar", text: "Kullanım sıklığına uygun teslimat planlaması" },
+            { icon: "phone", text: "Telefon ve e-posta ile doğrudan iletişim" },
+          ].map((item) => (
+            <li class="flex items-center gap-4 text-[15.5px]">
+              <span class="grid size-11 shrink-0 place-items-center rounded-full bg-white/10">
+                <Icon name={item.icon as IconKey} size={20} />
+              </span>
+              {item.text}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="container-site pb-14 lg:pb-20" aria-labelledby="erisim-baslik">
+    <p class="eyebrow">07</p>
+    <h2 id="erisim-baslik" class="section-title mt-2">Ürün Gruplarına Kolay Erişim</h2>
+    <p class="mt-3 max-w-[640px] text-[16px] text-muted">Fabrikanızın ihtiyaç duyduğu ürün grubuna doğrudan ulaşın.</p>
+    <div class="title-rule mb-8"></div>
+    <ProductCategoryGrid />
+  </section>
+
+  <div id="iletisim" class="container-site scroll-mt-32 pb-16 lg:pb-24">
+    <ContactStrip
+      title="Fabrikanızın ihtiyaçları için bize ulaşın"
+      description="İhtiyaç duyduğunuz ürün grupları hakkında bilgi almak için telefon veya e-posta ile doğrudan iletişime geçebilirsiniz."
+      emailSubject="Fabrika ürün ihtiyaçları hakkında bilgi"
+    />
+  </div>
+</SiteLayout>

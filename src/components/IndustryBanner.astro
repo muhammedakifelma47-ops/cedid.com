@@ -1,0 +1,47 @@
+---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import Icon, { type IconKey } from "./Icon.astro";
+
+interface Props {
+  title: string;
+  subtitle: string;
+  description: string;
+  href: string;
+  image: ImageMetadata;
+  imageAlt: string;
+  icon: IconKey;
+  tone: "navy" | "bordo";
+  headingLevel?: "h2" | "h3";
+}
+
+const { title, subtitle, description, href, image, imageAlt, icon, tone, headingLevel: Heading = "h2" } = Astro.props;
+const overlay =
+  tone === "navy"
+    ? "from-navy-deep via-navy-deep/[0.9] to-navy-deep/10"
+    : "from-bordo-dark via-bordo/[0.9] to-bordo/10";
+---
+
+<article class="relative isolate flex min-h-[340px] overflow-hidden rounded-md text-white lg:min-h-[360px]">
+  <Image
+    src={image}
+    alt={imageAlt}
+    widths={[640, 960, 1280]}
+    sizes="(min-width: 1024px) 50vw, 100vw"
+    class="absolute inset-0 -z-20 h-full w-full object-cover object-right"
+  />
+  <div class:list={["absolute inset-0 -z-10 bg-gradient-to-r via-45% to-90%", overlay]} aria-hidden="true"></div>
+  <div class="flex max-w-[430px] flex-col justify-center p-7 sm:p-9 lg:p-10">
+    <div class="flex items-center gap-4">
+      <Icon name={icon} size={44} strokeWidth={1.4} class="shrink-0" />
+      <Heading class="text-[27px] font-bold leading-tight text-white lg:text-[30px]">{title}</Heading>
+    </div>
+    <p class="mt-4 text-[14px] font-bold uppercase tracking-[0.08em] text-white/95">{subtitle}</p>
+    <p class="mt-2.5 text-[15px] leading-relaxed text-white/85">{description}</p>
+    <a href={href} class="btn-outline-light mt-7 self-start">
+      Detayları İncele
+      <Icon name="arrow-right" size={17} />
+      <span class="sr-only">: {title}</span>
+    </a>
+  </div>
+</article>

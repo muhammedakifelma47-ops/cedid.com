@@ -1,0 +1,46 @@
+---
+import SiteLayout from "../layouts/SiteLayout.astro";
+import Icon from "../components/Icon.astro";
+import { categories, categoryHref } from "../data/catalog";
+---
+
+<SiteLayout
+  title="Sayfa Bulunamadı | Cedid Ambalaj"
+  description="Aradığınız sayfa bulunamadı. Cedid Ambalaj ürün kataloğuna ve ana sayfaya buradan ulaşabilirsiniz."
+  noindex
+>
+  <section class="container-site py-20 lg:py-28">
+    <div class="mx-auto max-w-[680px] text-center">
+      <p class="text-[80px] font-black leading-none text-bordo lg:text-[110px]">404</p>
+      <h1 class="mt-4 text-[30px] font-bold lg:text-[38px]">Aradığınız sayfa bulunamadı</h1>
+      <p class="mt-4 text-[16px] leading-relaxed text-muted">
+        Sayfa taşınmış veya adresi değişmiş olabilir. Ana sayfaya dönebilir ya da ürün gruplarımızı inceleyebilirsiniz.
+      </p>
+      <div class="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+        <a href="/" class="btn-primary">
+          <Icon name="home" size={18} />
+          Ana Sayfaya Dön
+        </a>
+        <a href="/urunlerimiz" class="btn-outline">
+          Ürünlerimiz
+          <Icon name="arrow-right" size={17} />
+        </a>
+      </div>
+      <ul class="mt-10 flex flex-wrap justify-center gap-2">
+        {
+          categories.map((category) => (
+            <li>
+              <a
+                href={categoryHref(category.slug)}
+                class="inline-flex items-center gap-2 rounded-full border border-line px-4 py-2 text-[14px] text-navy-deep hover:border-bordo hover:text-bordo"
+              >
+                <Icon name={category.icon} size={16} />
+                {category.name}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+</SiteLayout>

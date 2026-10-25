@@ -1,0 +1,96 @@
+---
+import SiteLayout from "../layouts/SiteLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import ProductCategoryGrid from "../components/ProductCategoryGrid.astro";
+import Icon from "../components/Icon.astro";
+import { companyInfo } from "../data/site";
+import { getScene, catalogPdf } from "../lib/images";
+---
+
+<SiteLayout
+  title="E-Katalog | Cedid Ambalaj"
+  description="Cedid Ambalaj ürün gruplarını dijital katalog üzerinden inceleyin."
+  image={getScene("depo-genis")}
+>
+  <PageHero
+    eyebrow="Dijital Katalog"
+    title="E-Katalog"
+    description="Cedid Ambalaj ürün gruplarını dijital katalog üzerinden inceleyin."
+    image={getScene("depo-genis")}
+    imageAlt="Rafları kolilerle dolu geniş bir depo (temsili görsel)"
+    breadcrumbs={[{ label: "E-Katalog" }]}
+  />
+
+  <section class="container-site py-12 lg:py-16" aria-labelledby="katalog-baslik">
+    {
+      catalogPdf ? (
+        <div>
+          <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <h2 id="katalog-baslik" class="section-title">Cedid Ambalaj Ürün Kataloğu</h2>
+              <p class="mt-2 text-[15px] text-muted">Kataloğu bu sayfada görüntüleyebilir, yeni sekmede açabilir veya indirebilirsiniz.</p>
+            </div>
+            <div class="flex flex-col gap-3 sm:flex-row">
+              <a href={catalogPdf} target="_blank" rel="noopener" class="btn-outline">
+                <Icon name="external-link" size={17} />
+                Yeni sekmede aç
+              </a>
+              <a href={catalogPdf} download class="btn-primary">
+                <Icon name="download" size={17} />
+                Kataloğu indir (PDF)
+              </a>
+            </div>
+          </div>
+          <div class="mt-8 overflow-hidden rounded-md border border-line bg-light">
+            <object data={`${catalogPdf}#view=FitH`} type="application/pdf" class="h-[75svh] min-h-[480px] w-full" aria-label="E-katalog PDF görüntüleyici">
+              <div class="flex flex-col items-center gap-4 p-10 text-center">
+                <p class="text-[15px] text-muted">Tarayıcınız PDF dosyasını bu sayfada görüntüleyemiyor.</p>
+                <a href={catalogPdf} target="_blank" rel="noopener" class="btn-primary">
+                  Kataloğu aç
+                </a>
+              </div>
+            </object>
+          </div>
+        </div>
+      ) : (
+        <div class="grid overflow-hidden rounded-md border border-line lg:grid-cols-[1.1fr_1fr]">
+          <div class="p-8 lg:p-12">
+            <span class="grid size-14 place-items-center rounded-full bg-light text-navy">
+              <Icon name="file-text" size={28} strokeWidth={1.5} />
+            </span>
+            <h2 id="katalog-baslik" class="mt-6 text-[26px] font-bold lg:text-[30px]">Ürün gruplarını web kataloğumuzda inceleyin</h2>
+            <p class="mt-4 text-[16px] leading-relaxed text-muted">
+              PDF katalog şu anda bu sayfada yer almıyor. Tüm ürün gruplarımızı web kataloğumuz üzerinden inceleyebilir,
+              katalog talebiniz için bizimle iletişime geçebilirsiniz.
+            </p>
+            <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+              <a href="/urunlerimiz" class="btn-primary">
+                Web Kataloğunu İncele
+                <Icon name="arrow-right" size={17} />
+              </a>
+              <a href={`mailto:${companyInfo.email}?subject=${encodeURIComponent("E-katalog talebi")}`} class="btn-outline">
+                <Icon name="mail" size={17} />
+                E-posta ile iletişim
+              </a>
+            </div>
+          </div>
+          <div class="flex flex-col justify-center gap-4 bg-navy-deep p-8 text-white lg:p-12">
+            <p class="text-[13px] font-bold uppercase tracking-[0.12em] text-white/70">Katalogda yer alan ürün grupları</p>
+            <ul class="space-y-3 text-[16px]">
+              <li class="flex items-center gap-3"><Icon name="package" size={20} /> Ambalaj Ürünleri</li>
+              <li class="flex items-center gap-3"><Icon name="spray" size={20} /> Temizlik Ürünleri</li>
+              <li class="flex items-center gap-3"><Icon name="pen" size={20} /> Ofis ve Kırtasiye Ürünleri</li>
+              <li class="flex items-center gap-3"><Icon name="coffee" size={20} /> Gıda Ürünleri: Çay, Kahve, Şeker</li>
+            </ul>
+          </div>
+        </div>
+      )
+    }
+  </section>
+
+  <section class="container-site pb-16 lg:pb-24" aria-labelledby="kategoriler-baslik">
+    <h2 id="kategoriler-baslik" class="section-title">Ürün Kategorileri</h2>
+    <div class="title-rule mb-8"></div>
+    <ProductCategoryGrid />
+  </section>
+</SiteLayout>

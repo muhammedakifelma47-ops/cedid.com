@@ -1,14 +1,79 @@
 ---
 import SiteLayout from "../layouts/SiteLayout.astro";
+import HeroSection from "../components/home/HeroSection.astro";
+import BenefitsSection from "../components/home/BenefitsSection.astro";
+import SectionHeading from "../components/SectionHeading.astro";
+import ProductCategoryGrid from "../components/ProductCategoryGrid.astro";
+import SectorSection from "../components/home/SectorSection.astro";
+import IndustryBanner from "../components/IndustryBanner.astro";
+import CatalogCta from "../components/home/CatalogCta.astro";
+import CompanyAdvantages from "../components/CompanyAdvantages.astro";
+import { companyInfo } from "../data/site";
+import { getScene } from "../lib/images";
+
+// Yalnızca doğrulanmış firma bilgileriyle kurum yapılandırılmış verisi
+const organization = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: companyInfo.legalName,
+  alternateName: companyInfo.name,
+  slogan: companyInfo.slogan,
+  url: Astro.site?.href,
+  email: companyInfo.email,
+  telephone: companyInfo.phones.map((phone) => phone.href.replace("tel:", "")),
+  sameAs: [companyInfo.instagram.url],
+};
 ---
 
-<SiteLayout>
-  <main class="coming-soon">
-    <div class="mark" aria-hidden="true">C</div>
-    <p class="eyebrow">Cedid · Yeni bir başlangıç</p>
-    <h1>Çok <span>yakında.</span></h1>
-    <div class="rule" aria-hidden="true"></div>
-    <p class="message">Yeni web sitemizi özenle hazırlıyoruz. Çok yakında yeniden buradayız.</p>
-  </main>
-  <footer>© {new Date().getFullYear()} Cedid</footer>
+<SiteLayout
+  title="Cedid Ambalaj | İşletmenizin Tedarik Gücü"
+  description="Ambalaj, temizlik, ofis ve kırtasiye ile çay, kahve ve şeker ürün gruplarını Cedid Ambalaj kataloğunda inceleyin."
+  jsonLd={organization}
+>
+  <HeroSection />
+  <BenefitsSection />
+
+  <section class="pt-16 lg:pt-20" aria-labelledby="urun-gruplari-baslik">
+    <div class="container-site">
+      <SectionHeading
+        id="urun-gruplari-baslik"
+        title="Ürün Gruplarımız"
+        description="İşletmenizin tedarik ihtiyaçları için dört ana ürün grubumuzu inceleyin."
+        link={{ href: "/urunlerimiz", label: "Tüm Ürünleri Gör" }}
+      />
+      <div class="mt-8">
+        <ProductCategoryGrid />
+      </div>
+    </div>
+  </section>
+
+  <SectorSection />
+
+  <section aria-label="Sektörel çözümler" class="container-site grid gap-6 lg:grid-cols-2">
+    <IndustryBanner
+      title="Fabrikalar İçin"
+      subtitle="Güvenilir Tedarik Çözümleri"
+      description="Üretim süreçlerinde ihtiyaç duyduğunuz ambalaj, temizlik, ofis ve işletme ürünlerini farklı kategorilerde inceleyebilirsiniz."
+      href="/fabrikalar-icin"
+      image={getScene("fabrika-bant")}
+      imageAlt="Depo raflarının önünde forklift ve çalışan (temsili görsel)"
+      icon="factory"
+      tone="navy"
+    />
+    <IndustryBanner
+      title="Restoranlar İçin"
+      subtitle="Pratik ve Düzenli Tedarik"
+      description="Restoran, kafe ve yemek işletmelerinin ambalaj, temizlik ve gıda gruplarındaki ürün ihtiyaçlarını tek noktadan inceleyin."
+      href="/restoranlar-icin"
+      image={getScene("restoran-bant")}
+      imageAlt="Masaları hazırlanmış bir restoran salonu (temsili görsel)"
+      icon="utensils"
+      tone="bordo"
+    />
+  </section>
+
+  <div class="mt-6 lg:mt-8">
+    <CatalogCta />
+  </div>
+  <CompanyAdvantages />
 </SiteLayout>

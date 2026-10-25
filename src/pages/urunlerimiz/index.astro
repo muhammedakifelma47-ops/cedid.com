@@ -1,0 +1,105 @@
+---
+import { Image } from "astro:assets";
+import SiteLayout from "../../layouts/SiteLayout.astro";
+import PageHero from "../../components/PageHero.astro";
+import CategoryNavigation from "../../components/CategoryNavigation.astro";
+import ContactStrip from "../../components/ContactStrip.astro";
+import Icon from "../../components/Icon.astro";
+import { categories, categoryHref, getProductsByCategory } from "../../data/catalog";
+import { getCategoryImage, getScene } from "../../lib/images";
+---
+
+<SiteLayout
+  title="Ürünlerimiz | Cedid Ambalaj Ürün Kataloğu"
+  description="Ambalaj, temizlik, ofis ve kırtasiye ile çay, kahve ve şeker ürün gruplarını Cedid Ambalaj ürün kataloğunda inceleyin."
+  image={getScene("urunler-hero")}
+>
+  <PageHero
+    eyebrow="Ürün Kataloğu"
+    title="Ürünlerimiz"
+    description="Ambalaj, temizlik, ofis ve kırtasiye ile gıda ürün gruplarımızı inceleyin."
+    image={getScene("urunler-hero")}
+    imageAlt="Raflarında kolilerin bulunduğu geniş bir depo (temsili görsel)"
+    breadcrumbs={[{ label: "Ürünlerimiz" }]}
+  />
+
+  <div class="container-site grid gap-8 py-10 lg:grid-cols-[290px_minmax(0,1fr)] lg:gap-10 lg:py-16">
+    <CategoryNavigation />
+
+    <div>
+      <p class="max-w-[760px] text-[16px] leading-relaxed text-muted">
+        Cedid Ambalaj kataloğu dört ana ürün grubundan oluşur. İlgilendiğiniz grubu seçerek ürünleri, kısa açıklamalarını
+        ve ürün detaylarını inceleyebilirsiniz.
+      </p>
+
+      <ul class="mt-8 space-y-6">
+        {
+          categories.map((category) => {
+            const count = getProductsByCategory(category.slug).length;
+            const href = categoryHref(category.slug);
+            return (
+              <li>
+                <article class="grid overflow-hidden rounded-md border border-line bg-white transition-shadow hover:shadow-card md:grid-cols-[minmax(0,340px)_1fr]">
+                  <a href={href} class="relative block aspect-[16/10] overflow-hidden bg-light md:aspect-auto md:min-h-[250px]" tabindex="-1" aria-hidden="true">
+                    <Image
+                      src={getCategoryImage(category.slug)}
+                      alt=""
+                      widths={[480, 680, 900]}
+                      sizes="(min-width: 768px) 340px, 100vw"
+                      class="absolute inset-0 h-full w-full object-cover"
+                    />
+                  </a>
+                  <div class="flex flex-col p-6 lg:p-8">
+                    <div class="flex items-center gap-3">
+                      <span
+                        class:list={[
+                          "grid size-10 place-items-center rounded text-white",
+                          category.accent === "bordo" ? "bg-bordo" : "bg-navy-deep",
+                        ]}
+                      >
+                        <Icon name={category.icon} size={20} />
+                      </span>
+                      <p class="text-[13px] font-bold uppercase tracking-[0.08em] text-muted">{count} ürün grubu</p>
+                    </div>
+                    <h2 class="mt-4 text-[24px] font-bold leading-tight lg:text-[26px]">
+                      <a href={href} class="hover:text-bordo">
+                        {category.name}
+                      </a>
+                    </h2>
+                    <p class="mt-2.5 text-[15px] leading-relaxed text-muted">{category.description}</p>
+                    <ul class="mt-4 flex flex-wrap gap-2" aria-label={`${category.name} alt grupları`}>
+                      {category.groups.map((group) => (
+                        <li>
+                          <a
+                            href={`${href}#${group.slug}`}
+                            class="inline-block rounded-full border border-line bg-light px-3 py-1.5 text-[13px] text-navy-deep transition-colors hover:border-bordo hover:text-bordo"
+                          >
+                            {group.name}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                    <a href={href} class="link-arrow mt-6 self-start">
+                      Kategoriyi İncele
+                      <Icon name="arrow-right" size={17} />
+                      <span class="sr-only">: {category.name}</span>
+                    </a>
+                  </div>
+                </article>
+              </li>
+            );
+          })
+        }
+      </ul>
+
+      <p class="mt-6 flex items-start gap-2 text-[13.5px] text-muted">
+        <Icon name="info" size={16} class="mt-0.5 shrink-0 text-navy" />
+        Katalogdaki görseller ürün gruplarını temsil eder. Ürün çeşitleri ve uygun seçenekler için bizimle iletişime geçebilirsiniz.
+      </p>
+
+      <div class="mt-10">
+        <ContactStrip />
+      </div>
+    </div>
+  </div>
+</SiteLayout>
