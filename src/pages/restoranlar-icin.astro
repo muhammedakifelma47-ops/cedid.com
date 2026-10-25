@@ -1,0 +1,198 @@
+---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import SiteLayout from "../layouts/SiteLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import ContactStrip from "../components/ContactStrip.astro";
+import Icon, { type IconKey } from "../components/Icon.astro";
+import { categoryHref, productHref, type Product } from "../data/catalog";
+import { pickProducts } from "../lib/pick";
+import { getScene, getProductImage, getGroupImage } from "../lib/images";
+
+interface Solution {
+  id: string;
+  icon: IconKey;
+  title: string;
+  description: string;
+  image: ImageMetadata;
+  imageAlt: string;
+  products: Product[];
+  link: { href: string; label: string };
+}
+
+const solutions: Solution[] = [
+  {
+    id: "ambalaj",
+    icon: "package",
+    title: "Ambalaj Ürünleri",
+    description:
+      "Paket servis, gel-al siparişleri ve mutfakta ürün saklama için gıda ambalajına uygun ürünler, poşet ve torbalar.",
+    image: getProductImage("ambalaj", "gida-ambalajina-uygun-urunler")!,
+    imageAlt: "Paket servis için yemek kapları (temsili görsel)",
+    products: pickProducts("ambalaj", ["gida-ambalajina-uygun-urunler", "poset-cesitleri", "naylon-torbalar", "koli-ve-karton-kutular"]),
+    link: { href: categoryHref("ambalaj"), label: "Ambalaj ürünleri" },
+  },
+  {
+    id: "temizlik-hijyen",
+    icon: "spray",
+    title: "Temizlik ve Hijyen Ürünleri",
+    description:
+      "Mutfak, servis alanı ve misafir lavaboları için bulaşık, yüzey temizliği, dezenfeksiyon ve el hijyeni ürünleri.",
+    image: getProductImage("temizlik", "bulasik-yikama-urunleri")!,
+    imageAlt: "Mutfak lavabosunda bulaşık deterjanı (temsili görsel)",
+    products: pickProducts("temizlik", [
+      "bulasik-yikama-urunleri",
+      "yuzey-temizleyiciler",
+      "dezenfeksiyon-urunleri",
+      "el-hijyeni-urunleri",
+      "sivi-sabunlar",
+    ]),
+    link: { href: categoryHref("temizlik"), label: "Temizlik ürünleri" },
+  },
+  {
+    id: "cay-kahve-seker",
+    icon: "coffee",
+    title: "Çay, Kahve ve Şeker",
+    description: "Misafir ikramı ve servis için çay, kahve ve şeker ürün grupları.",
+    image: getGroupImage("kahve")!,
+    imageAlt: "Kahve çekirdekleri, öğütülmüş kahve ve bir fincan kahve (temsili görsel)",
+    products: pickProducts("gida", ["dokme-cay", "turk-kahvesi", "filtre-kahve", "kup-seker"]),
+    link: { href: categoryHref("gida"), label: "Gıda ürünleri" },
+  },
+  {
+    id: "ofis-kirtasiye",
+    icon: "pen",
+    title: "Ofis ve Kırtasiye Ürünleri",
+    description: "Sipariş takibi, kasa ve yönetim işleri için not, kalem ve yazıcı sarf ürünleri.",
+    image: getProductImage("ofis-kirtasiye", "bloknotlar")!,
+    imageAlt: "Masa üzerinde bloknot ve kalem (temsili görsel)",
+    products: pickProducts("ofis-kirtasiye", ["bloknotlar", "kalemler", "zarf-ve-evrak-urunleri", "yazici-sarf-malzemeleri"]),
+    link: { href: categoryHref("ofis-kirtasiye"), label: "Ofis ürünleri" },
+  },
+  {
+    id: "gunluk-ihtiyaclar",
+    icon: "utensils",
+    title: "Günlük İşletme İhtiyaçları",
+    description:
+      "Servis ve mutfak düzeni için peçete, kağıt havlu, temizlik bezleri, süngerler ve çöp kovaları.",
+    image: getScene("profesyonel-mutfak"),
+    imageAlt: "Yoğun çalışan profesyonel bir restoran mutfağı (temsili görsel)",
+    products: pickProducts("temizlik", ["peceteler", "kagit-havlular", "temizlik-bezleri", "sungerler", "cop-kovalari"]),
+    link: { href: categoryHref("temizlik"), label: "Kağıt ve temizlik ürünleri" },
+  },
+];
+---
+
+<SiteLayout
+  title="Restoranlar İçin Tedarik | Cedid Ambalaj"
+  description="Restoran, kafe ve yemek işletmeleri için ambalaj, temizlik ve hijyen, çay, kahve ve şeker ile günlük işletme ürünlerini inceleyin."
+  image={getScene("restoran-hero")}
+>
+  <PageHero
+    eyebrow="Sektörel Çözümler"
+    title="Restoranlar İçin Pratik Tedarik Çözümleri"
+    description="Restoranların günlük operasyonlarında ihtiyaç duyduğu ambalaj, temizlik ve temel gıda ürünlerini kategoriler halinde inceleyin."
+    image={getScene("restoran-hero")}
+    imageAlt="Akşam ışığında bir restoran salonu (temsili görsel)"
+    breadcrumbs={[{ label: "Restoranlar İçin" }]}
+    tone="bordo"
+  >
+    <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+      <a href="#urun-gruplari" class="btn-white">
+        Ürün Gruplarını Gör
+        <Icon name="arrow-right" size={17} />
+      </a>
+      <a href="#iletisim" class="btn-outline-light">Bilgi Alın</a>
+    </div>
+  </PageHero>
+
+  <section class="container-site py-14 lg:py-20" aria-labelledby="restoran-giris">
+    <div class="grid gap-8 lg:grid-cols-[1fr_1fr] lg:items-end">
+      <div>
+        <p class="eyebrow">Restoran, kafe ve yemek işletmeleri</p>
+        <h2 id="restoran-giris" class="section-title mt-2">Servisten mutfağa, günlük ihtiyaçlar tek katalogda</h2>
+      </div>
+      <p class="text-[16px] leading-relaxed text-muted">
+        Restoranlarda paket servis ambalajından mutfak hijyenine, misafir ikramından kasa işlerine kadar pek çok ürün düzenli
+        olarak kullanılır. Aşağıdaki gruplar, bu ihtiyaçları ilgili ürün kategorilerine bağlar.
+      </p>
+    </div>
+    <div class="title-rule"></div>
+
+    <nav aria-label="Restoran ürün grupları" class="mt-6">
+      <ul class="flex flex-wrap gap-2">
+        {
+          solutions.map((item) => (
+            <li>
+              <a
+                href={`#${item.id}`}
+                class="inline-flex items-center gap-2 rounded-full border border-line px-4 py-2 text-[14px] font-medium text-navy-deep hover:border-bordo hover:text-bordo"
+              >
+                <Icon name={item.icon} size={16} class="text-bordo" />
+                {item.title}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </section>
+
+  <section id="urun-gruplari" class="scroll-mt-28 bg-light py-14 lg:py-20" aria-label="Restoranlar için ürün grupları">
+    <ul class="container-site grid gap-6 md:grid-cols-2">
+      {
+        solutions.map((item, index) => (
+          <li id={item.id} class:list={["scroll-mt-32", index === solutions.length - 1 && "md:col-span-2"]}>
+            <article
+              class:list={[
+                "flex h-full flex-col overflow-hidden rounded-md border border-line bg-white",
+                index === solutions.length - 1 && "md:grid md:grid-cols-2",
+              ]}
+            >
+              <div class:list={["relative aspect-[16/9] bg-light", index === solutions.length - 1 && "md:aspect-auto md:min-h-[300px]"]}>
+                <Image
+                  src={item.image}
+                  alt={item.imageAlt}
+                  widths={[480, 720, 960]}
+                  sizes="(min-width: 768px) 50vw, 100vw"
+                  class="absolute inset-0 h-full w-full object-cover"
+                />
+                <span class="absolute left-5 top-5 grid size-12 place-items-center rounded-full bg-bordo text-white shadow-card">
+                  <Icon name={item.icon} size={22} />
+                </span>
+              </div>
+              <div class="flex flex-1 flex-col p-6 lg:p-8">
+                <h2 class="text-[23px] font-bold leading-tight">{item.title}</h2>
+                <p class="mt-3 text-[15px] leading-relaxed text-muted">{item.description}</p>
+                <ul class="mt-5 flex flex-wrap gap-2">
+                  {item.products.map((product) => (
+                    <li>
+                      <a
+                        href={productHref(product)}
+                        class="inline-block rounded border border-line bg-light px-3 py-1.5 text-[13.5px] text-navy-deep transition-colors hover:border-bordo hover:text-bordo"
+                      >
+                        {product.name}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+                <a href={item.link.href} class="link-arrow mt-auto self-start pt-6">
+                  {item.link.label}
+                  <Icon name="arrow-right" size={17} />
+                </a>
+              </div>
+            </article>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <div id="iletisim" class="container-site scroll-mt-32 py-16 lg:py-24">
+    <ContactStrip
+      title="Restoranınız için bilgi alın"
+      description="Ambalaj, temizlik ve gıda ürün grupları hakkında bilgi almak için telefon veya e-posta ile doğrudan iletişime geçebilirsiniz."
+      emailSubject="Restoran ürün ihtiyaçları hakkında bilgi"
+    />
+  </div>
+</SiteLayout>

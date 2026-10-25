@@ -1,0 +1,64 @@
+---
+import { Image } from "astro:assets";
+import Icon from "../Icon.astro";
+import { getScene } from "../../lib/images";
+---
+
+<section class="relative isolate overflow-hidden bg-navy-deep" aria-labelledby="hero-baslik">
+  <Image
+    src={getScene("depo-hero")}
+    alt="Yüksek raflı bir depoda paletler, koliler ve forklift (temsili görsel)"
+    widths={[640, 960, 1280, 1920, 2400]}
+    sizes="100vw"
+    priority
+    class="absolute inset-0 -z-20 h-full w-full -scale-x-100 object-cover object-[40%_center]"
+  />
+  <div
+    class="absolute inset-0 -z-10 bg-gradient-to-r from-navy-deep via-navy-deep/[0.86] to-navy-deep/25 lg:via-navy-deep/[0.72] lg:via-[38%] lg:to-transparent lg:to-[72%]"
+    aria-hidden="true"
+  >
+  </div>
+  <div class="absolute inset-x-0 bottom-0 -z-10 h-40 bg-gradient-to-t from-navy-deep/50 to-transparent" aria-hidden="true"></div>
+
+  <div class="container-site pb-36 pt-14 sm:pb-40 sm:pt-20 lg:min-h-[690px] lg:pb-48 lg:pt-28">
+    <div class="max-w-[640px]">
+      <p class="text-[12px] font-bold uppercase leading-relaxed tracking-[0.06em] text-white/90 sm:text-[13px]">
+        Ambalaj, temizlik, gıda, ofis ve kırtasiye ürünlerinde
+      </p>
+      <h1
+        id="hero-baslik"
+        class="mt-4 text-[42px] font-black leading-[1.04] tracking-[-0.02em] text-white sm:text-[60px] lg:text-[78px]"
+      >
+        İşletmenizin <span class="block text-bordo-bright">Tedarik Gücü</span>
+      </h1>
+      <p class="mt-6 max-w-[540px] text-[17px] leading-relaxed text-white/85 lg:text-[18px]">
+        İhtiyacınız olan her ürün, tek bir güvencede. Cedid Ambalaj, işletmenizin tedarik süreçlerinde ihtiyaç duyduğu ürün
+        gruplarını tek noktada bir araya getirir.
+      </p>
+      <div class="mt-9 flex flex-col gap-3 sm:flex-row sm:gap-4">
+        <a href="/urunlerimiz" class="btn-primary px-7 py-[18px]">
+          <Icon name="catalog" size={19} />
+          Ürünlerimizi İncele
+          <Icon name="arrow-right" size={18} />
+        </a>
+        <a href="/iletisim" class="btn-outline-light px-7 py-[18px]">
+          İletişime Geç
+          <Icon name="arrow-right" size={18} />
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Referans tasarımdaki alt kenar bordo ve lacivert vurguları -->
+  <svg
+    class="absolute inset-x-0 bottom-0 h-[70px] w-full sm:h-[100px]"
+    viewBox="0 0 1440 100"
+    preserveAspectRatio="none"
+    aria-hidden="true"
+  >
+    <path d="M0 100V18C210 52 430 80 760 100Z" fill="#800020"></path>
+    <path d="M0 100V58C260 78 520 92 760 100Z" fill="#66001a" opacity="0.65"></path>
+    <path d="M1440 100V24C1210 66 980 90 760 100Z" fill="#000080" opacity="0.85"></path>
+    <path d="M0 100V92C480 96 960 96 1440 84V100Z" fill="#fff"></path>
+  </svg>
+</section>

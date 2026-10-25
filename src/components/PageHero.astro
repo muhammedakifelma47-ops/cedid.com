@@ -1,0 +1,47 @@
+---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import Breadcrumbs, { type Crumb } from "./Breadcrumbs.astro";
+
+interface Props {
+  title: string;
+  description?: string;
+  eyebrow?: string;
+  image: ImageMetadata;
+  imageAlt: string;
+  breadcrumbs: Crumb[];
+  tone?: "navy" | "bordo";
+  /** Görseli yatay çevirir (önemli bölgeyi sağa almak için) */
+  flip?: boolean;
+}
+
+const { title, description, eyebrow, image, imageAlt, breadcrumbs, tone = "navy", flip = false } = Astro.props;
+const overlay =
+  tone === "navy"
+    ? "from-navy-deep via-navy-deep/[0.88] to-navy-deep/30"
+    : "from-bordo-dark via-bordo/[0.88] to-bordo/25";
+---
+
+<section class="relative isolate overflow-hidden bg-navy-deep text-white">
+  <Image
+    src={image}
+    alt={imageAlt}
+    widths={[640, 1024, 1440, 1920]}
+    sizes="100vw"
+    priority
+    class:list={["absolute inset-0 -z-20 h-full w-full object-cover", flip && "-scale-x-100"]}
+  />
+  <div class:list={["absolute inset-0 -z-10 bg-gradient-to-r via-50%", overlay]} aria-hidden="true"></div>
+  <div class="container-site py-14 sm:py-16 lg:py-24">
+    <div class="max-w-[720px]">
+      {eyebrow && <p class="text-[13px] font-bold uppercase tracking-[0.1em] text-white/85">{eyebrow}</p>}
+      <h1 class="mt-3 text-[34px] font-black leading-[1.1] tracking-[-0.01em] text-white sm:text-[44px] lg:text-[52px]">
+        {title}
+      </h1>
+      <span class="mt-5 block h-[3px] w-16 bg-bordo-bright" aria-hidden="true"></span>
+      {description && <p class="mt-5 text-[16px] leading-relaxed text-white/85 lg:text-[18px]">{description}</p>}
+      <slot />
+    </div>
+  </div>
+</section>
+<Breadcrumbs items={breadcrumbs} />

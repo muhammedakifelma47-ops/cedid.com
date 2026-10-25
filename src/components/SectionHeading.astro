@@ -1,0 +1,30 @@
+---
+import Icon from "./Icon.astro";
+
+interface Props {
+  title: string;
+  description?: string;
+  link?: { href: string; label: string };
+  id?: string;
+  /** Başlık seviyesi */
+  as?: "h1" | "h2";
+}
+
+const { title, description, link, id, as: Tag = "h2" } = Astro.props;
+---
+
+<div>
+  <div class="flex flex-col gap-3 lg:flex-row lg:items-end lg:gap-10">
+    <Tag id={id} class="section-title shrink-0">{title}</Tag>
+    {description && <p class="text-[15px] leading-relaxed text-muted lg:flex-1 lg:pb-1.5">{description}</p>}
+    {
+      link && (
+        <a href={link.href} class="link-arrow shrink-0 lg:pb-1.5">
+          {link.label}
+          <Icon name="arrow-right" size={17} />
+        </a>
+      )
+    }
+  </div>
+  <div class="title-rule"></div>
+</div>

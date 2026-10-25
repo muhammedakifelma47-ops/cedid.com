@@ -1,0 +1,33 @@
+---
+import Icon from "../Icon.astro";
+import { benefits } from "../../data/site";
+---
+
+<section aria-label="Hizmet avantajlarımız" class="relative z-10 -mt-14 sm:-mt-16 lg:-mt-[72px]">
+  <div class="container-site">
+    <ul class="grid overflow-hidden rounded-md border border-line bg-white shadow-panel sm:grid-cols-2 lg:grid-cols-4">
+      {
+        benefits.map((item, index) => (
+          <li
+            class:list={[
+              "flex items-start gap-4 px-6 py-6 lg:px-7 lg:py-7",
+              index < benefits.length - 1 && "border-b border-line",
+              index % 2 === 0 && "sm:border-r",
+              index >= 2 && "sm:border-b-0",
+              "lg:border-b-0",
+              index < benefits.length - 1 ? "lg:border-r" : "lg:border-r-0",
+            ]}
+          >
+            <span class="grid size-12 shrink-0 place-items-center text-bordo">
+              <Icon name={item.icon} size={38} strokeWidth={1.5} />
+            </span>
+            <span>
+              <h2 class="text-[16px] font-bold text-navy-deep">{item.title}</h2>
+              <p class="mt-1 text-[14px] leading-snug text-muted">{item.description}</p>
+            </span>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>

@@ -1,0 +1,181 @@
+---
+import type { GetStaticPaths } from "astro";
+import SiteLayout from "../../../layouts/SiteLayout.astro";
+import Breadcrumbs from "../../../components/Breadcrumbs.astro";
+import ProductImage from "../../../components/ProductImage.astro";
+import ProductCard from "../../../components/ProductCard.astro";
+import Icon from "../../../components/Icon.astro";
+import {
+  products,
+  getCategory,
+  getProductsByCategory,
+  categoryHref,
+  type Product,
+  type Category,
+} from "../../../data/catalog";
+import { companyInfo } from "../../../data/site";
+import { getProductImage, getCategoryImage } from "../../../lib/images";
+
+export const getStaticPaths = (() =>
+  products.map((product) => ({
+    params: { kategori: product.category, urun: product.slug },
+    props: { product, category: getCategory(product.category)! },
+  }))) satisfies GetStaticPaths;
+
+interface Props {
+  product: Product;
+  category: Category;
+}
+
+const { product, category } = Astro.props;
+const group = category.groups.find((item) => item.slug === product.group);
+const hasPhoto = Boolean(getProductImage(product.category, product.slug));
+const backHref = categoryHref(category.slug);
+
+const siblings = getProductsByCategory(category.slug).filter((item) => item.slug !== product.slug);
+const related = [
+  ...siblings.filter((item) => item.group === product.group),
+  ...siblings.filter((item) => item.group !== product.group),
+].slice(0, 4);
+
+const mailto = `mailto:${companyInfo.email}?subject=${encodeURIComponent(`Ürün bilgisi: ${product.name}`)}`;
+---
+
+<SiteLayout
+  title={`${product.name} | ${category.name} | Cedid Ambalaj`}
+  description={`${product.shortDescription} ${product.name} hakkında bilgi almak için Cedid Ambalaj ile iletişime geçin.`}
+  image={getProductImage(product.category, product.slug) ?? getCategoryImage(category.slug)}
+>
+  <Breadcrumbs
+    items={[
+      { label: "Ürünlerimiz", href: "/urunlerimiz" },
+      { label: category.name, href: backHref },
+      { label: product.name },
+    ]}
+  />
+
+  <div class="container-site py-10 lg:py-14">
+    <a href={backHref} class="link-arrow mb-6 text-[14px]" data-back-link>
+      <Icon name="arrow-left" size={16} />
+      Önceki sayfaya dön
+    </a>
+
+    <div class="grid gap-8 lg:grid-cols-2 lg:gap-14">
+      <figure>
+        <ProductImage
+          product={product}
+          class="aspect-[4/3] rounded-md border border-line"
+          sizes="(min-width: 1024px) 50vw, 100vw"
+          widths={[480, 720, 960]}
+          priority
+        />
+        {hasPhoto && <figcaption class="mt-2.5 text-[13px] text-muted">Görsel temsilidir.</figcaption>}
+      </figure>
+
+      <div>
+        <a href={backHref} class="inline-flex items-center gap-2 text-[13px] font-bold uppercase tracking-[0.08em] text-bordo hover:underline">
+          <Icon name={category.icon} size={16} />
+          {category.name}
+        </a>
+        <h1 class="mt-3 text-[32px] font-black leading-tight lg:text-[40px]">{product.name}</h1>
+        {group && <p class="mt-3 inline-block rounded-full bg-light px-3 py-1 text-[13px] font-medium text-navy-deep">{group.name}</p>}
+        <div class="prose-cedid mt-5 text-[16px]">
+          <p>{product.description}</p>
+        </div>
+
+        {
+          product.specifications && product.specifications.length > 0 ? (
+            <div class="mt-6 overflow-hidden rounded-md border border-line">
+              <h2 class="bg-light px-5 py-3 text-[15px] font-bold">Ürün Özellikleri</h2>
+              <dl class="divide-y divide-line">
+                {product.specifications.map((spec) => (
+                  <div class="grid grid-cols-[40%_1fr] gap-4 px-5 py-3 text-[14.5px]">
+                    <dt class="font-medium text-navy-deep">{spec.label}</dt>
+                    <dd class="text-muted">{spec.value}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+          ) : (
+            <div class="mt-6 flex gap-3 rounded-md border border-line bg-light p-5">
+              <Icon name="info" size={20} class="mt-0.5 shrink-0 text-navy" />
+              <p class="text-[14.5px] leading-relaxed text-muted">
+                Bu ürünle ilgili tür, ölçü, ambalaj ve tedarik seçenekleri hakkında güncel bilgi almak için bizimle
+                telefon veya e-posta ile iletişime geçebilirsiniz.
+              </p>
+            </div>
+          )
+        }
+
+        <div class="mt-7">
+          <h2 class="text-[16px] font-bold">Bu ürün hakkında bilgi alın</h2>
+          <div class="mt-3 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <a href={companyInfo.phones[0].href} class="btn-primary">
+              <Icon name="phone" size={17} />
+              Telefonla Bilgi Al
+            </a>
+            <a href={mailto} class="btn-navy">
+              <Icon name="mail" size={17} />
+              E-posta ile Bilgi Al
+            </a>
+          </div>
+          <ul class="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-[14px] text-muted">
+            {
+              companyInfo.phones.map((phone) => (
+                <li>
+                  <a href={phone.href} class="inline-flex items-center gap-1.5 hover:text-bordo">
+                    <Icon name="phone" size={14} class="text-navy" />
+                    {phone.display}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+
+        <a href={backHref} class="btn-outline mt-8">
+          <Icon name="arrow-left" size={17} />
+          {category.name} kategorisine dön
+        </a>
+      </div>
+    </div>
+
+    {
+      related.length > 0 && (
+        <section class="mt-16 border-t border-line pt-12" aria-labelledby="ilgili-urunler">
+          <div class="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+            <h2 id="ilgili-urunler" class="text-[24px] font-bold">
+              Aynı kategorideki diğer ürünler
+            </h2>
+            <a href={backHref} class="link-arrow text-[14px]">
+              Tümünü gör
+              <Icon name="arrow-right" size={16} />
+            </a>
+          </div>
+          <ul class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {related.map((item) => (
+              <li>
+                <ProductCard product={item} />
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+  </div>
+</SiteLayout>
+
+<script>
+  // Site içinden gelindiyse tarayıcı geçmişinde bir önceki sayfaya döner; aksi halde kategori sayfasına gider.
+  const backLink = document.querySelector<HTMLAnchorElement>("[data-back-link]");
+  backLink?.addEventListener("click", (event) => {
+    try {
+      if (document.referrer && new URL(document.referrer).origin === window.location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    } catch {
+      // Geçersiz referrer: bağlantı normal şekilde kategori sayfasına gider.
+    }
+  });
+</script>

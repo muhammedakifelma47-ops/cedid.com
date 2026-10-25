@@ -1,0 +1,40 @@
+---
+import { Image } from "astro:assets";
+import Icon from "../Icon.astro";
+import { sectors } from "../../data/site";
+import { getScene } from "../../lib/images";
+---
+
+<section class="relative isolate overflow-hidden py-16 lg:py-20" aria-labelledby="sektorler-baslik">
+  <div class="absolute inset-y-0 right-0 -z-10 hidden w-[48%] lg:block" aria-hidden="true">
+    <Image src={getScene("depo-raflar")} alt="" widths={[700, 1000]} sizes="48vw" class="h-full w-full object-cover opacity-30" />
+    <div class="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-white/30"></div>
+  </div>
+
+  <div class="container-site">
+    <div class="flex flex-col gap-3 lg:flex-row lg:items-end lg:gap-12">
+      <h2 id="sektorler-baslik" class="section-title shrink-0">Hizmet Verdiğimiz Sektörler</h2>
+      <p class="max-w-[480px] text-[15px] leading-relaxed text-muted lg:pb-1.5">
+        Farklı sektörlerde faaliyet gösteren işletmelerin ürün tedarik ihtiyaçlarına yönelik çözümler sunuyoruz.
+      </p>
+    </div>
+
+    <ul class="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:max-w-[1120px] lg:grid-cols-6">
+      {
+        sectors.map((sector) => (
+          <li class="flex">
+            <a
+              href={sector.href ?? `/hakkimizda#sektor-${sector.slug}`}
+              class="group flex w-full flex-col items-center rounded-md border border-line bg-white px-4 pb-5 pt-7 text-center shadow-card transition-colors hover:border-bordo/40"
+            >
+              <Icon name={sector.icon} size={46} strokeWidth={1.35} class="text-navy" />
+              <span class="mt-4 text-[15px] font-bold text-navy-deep group-hover:text-bordo">{sector.name}</span>
+              <span class="mt-3 h-[3px] w-8 rounded-full bg-bordo" aria-hidden="true" />
+              <span class="sr-only">: {sector.description}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>

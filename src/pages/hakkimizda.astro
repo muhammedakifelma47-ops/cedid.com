@@ -1,0 +1,243 @@
+---
+import SiteLayout from "../layouts/SiteLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import Logo from "../components/Logo.astro";
+import Icon from "../components/Icon.astro";
+import { companyInfo, sectors } from "../data/site";
+import { categories, categoryHref } from "../data/catalog";
+import { getScene, storePhoto } from "../lib/images";
+
+const reasons = [
+  "Birden fazla ürün kategorisine tek noktadan erişim",
+  "Açık ve anlaşılır ürün kataloğu",
+  "İşletme ihtiyaçlarına yönelik ürün grupları",
+  "Doğrudan iletişim imkânı",
+  "Kurumsal ve çözüm odaklı yaklaşım",
+];
+---
+
+<SiteLayout
+  title="Hakkımızda | Cedid Ambalaj Tic. Ltd. Şti."
+  description="Cedid Ambalaj Tic. Ltd. Şti.; ambalaj, temizlik, ofis ve kırtasiye ile çay, kahve ve şeker ürün gruplarında işletmelerin tedarik ihtiyaçlarına odaklanır."
+  image={getScene("depo-forklift")}
+>
+  <PageHero
+    eyebrow={companyInfo.legalName}
+    title="Hakkımızda"
+    description={companyInfo.slogan}
+    image={getScene("depo-forklift")}
+    imageAlt="Depoda paletli yük taşıyan forklift (temsili görsel)"
+    breadcrumbs={[{ label: "Hakkımızda" }]}
+  />
+
+  <!-- Biz Kimiz -->
+  <section class="container-site py-14 lg:py-20" aria-labelledby="biz-kimiz">
+    <div class="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+      <div>
+        <p class="eyebrow">Kurumsal</p>
+        <h2 id="biz-kimiz" class="section-title mt-2">Biz Kimiz?</h2>
+        <span class="mt-4 block h-[3px] w-14 bg-bordo" aria-hidden="true"></span>
+        <p class="mt-6 text-[17px] leading-relaxed text-ink">
+          Cedid Ambalaj Tic. Ltd. Şti., işletmelerin ambalaj, temizlik, ofis ve kırtasiye ile temel gıda ürünlerine yönelik
+          tedarik ihtiyaçlarına odaklanan bir firmadır. Farklı ürün gruplarını tek bir noktada bir araya getirerek
+          müşterilerimizin ihtiyaç duyduğu ürünleri kolayca incelemesine yardımcı olur.
+        </p>
+      </div>
+
+      {
+        storePhoto ? (
+          <figure class="overflow-hidden rounded-md shadow-panel">
+            <img
+              src={storePhoto}
+              alt="Cedid Ambalaj mağazası"
+              class="aspect-[4/3] w-full object-cover [filter:contrast(1.04)_saturate(1.03)]"
+              loading="lazy"
+              decoding="async"
+            />
+            <figcaption class="bg-navy-deep px-5 py-3 text-[13.5px] text-white/85">Cedid Ambalaj mağazası</figcaption>
+          </figure>
+        ) : (
+          <div class="relative overflow-hidden rounded-md bg-navy-deep p-8 text-white lg:p-10">
+            <svg class="absolute -right-16 -top-10 h-48 w-80 opacity-80" viewBox="0 0 320 190" aria-hidden="true">
+              <path d="M320 0H60c80 60 160 90 260 100z" fill="#800020" />
+              <path d="M320 100C220 90 140 60 60 0H20c90 90 190 130 300 140z" fill="#000080" opacity="0.6" />
+            </svg>
+            <div class="relative">
+              <div class="h-14">
+                <Logo variant="light" class="h-full" />
+              </div>
+              <p class="mt-6 text-[13px] font-bold uppercase tracking-[0.2em] text-white/80">{companyInfo.slogan}</p>
+              <ul class="mt-6 grid gap-3 sm:grid-cols-2">
+                {categories.map((category) => (
+                  <li class="flex items-center gap-3 rounded border border-white/15 bg-white/5 px-4 py-3 text-[15px]">
+                    <Icon name={category.icon} size={20} />
+                    {category.name}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        )
+      }
+    </div>
+  </section>
+
+  <!-- Ne Yapıyoruz -->
+  <section class="bg-light py-14 lg:py-20" aria-labelledby="ne-yapiyoruz">
+    <div class="container-site">
+      <div class="grid gap-6 lg:grid-cols-[1fr_1.3fr] lg:gap-16">
+        <div>
+          <h2 id="ne-yapiyoruz" class="section-title">Ne Yapıyoruz?</h2>
+          <span class="mt-4 block h-[3px] w-14 bg-bordo" aria-hidden="true"></span>
+        </div>
+        <p class="text-[16.5px] leading-relaxed text-muted">
+          Ambalaj malzemelerinden temizlik ürünlerine, ofis ve kırtasiye ihtiyaçlarından çay, kahve ve şeker grubuna kadar
+          farklı ürün kategorilerinde hizmet veriyoruz. Amacımız, işletmelerin ürün ihtiyaçlarını anlaşılır bir katalog yapısı
+          üzerinden değerlendirmelerini kolaylaştırmaktır.
+        </p>
+      </div>
+      <ul class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          categories.map((category) => (
+            <li>
+              <a
+                href={categoryHref(category.slug)}
+                class="group flex h-full flex-col rounded-md border border-line bg-white p-6 transition-shadow hover:shadow-card"
+              >
+                <span
+                  class:list={[
+                    "grid size-12 place-items-center rounded text-white",
+                    category.accent === "bordo" ? "bg-bordo" : "bg-navy-deep",
+                  ]}
+                >
+                  <Icon name={category.icon} size={24} />
+                </span>
+                <h3 class="mt-5 text-[18px] font-bold group-hover:text-bordo">{category.name}</h3>
+                <p class="mt-2 flex-1 text-[14.5px] leading-relaxed text-muted">{category.cardDescription}</p>
+                <span class="link-arrow mt-4 text-[14px]">
+                  İncele <Icon name="arrow-right" size={16} />
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- Hizmet Yaklaşımımız -->
+  <section class="container-site py-14 lg:py-20" aria-labelledby="yaklasim">
+    <div class="relative overflow-hidden rounded-md bg-bordo px-7 py-10 text-white sm:px-10 lg:px-16 lg:py-14">
+      <svg class="absolute -bottom-6 right-0 h-40 w-[420px] opacity-90" viewBox="0 0 420 160" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M420 160V20C300 90 160 130 0 160z" fill="#07162F" />
+      </svg>
+      <div class="relative max-w-[820px]">
+        <h2 id="yaklasim" class="text-[28px] font-bold text-white lg:text-[34px]">Hizmet Yaklaşımımız</h2>
+        <p class="mt-5 text-[18px] leading-relaxed text-white/90 lg:text-[20px]">
+          Her işletmenin ürün ihtiyacı farklıdır. Bu nedenle ürün gruplarımızı açık ve düzenli kategoriler halinde sunuyor,
+          müşterilerimizin ihtiyaç duydukları ürünleri kolayca bulmalarını hedefliyoruz.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sektörler -->
+  <section id="sektorler" class="scroll-mt-28 pb-14 lg:pb-20" aria-labelledby="sektorler-baslik">
+    <div class="container-site">
+      <h2 id="sektorler-baslik" class="section-title">Hangi Sektörlere Hitap Ediyoruz?</h2>
+      <div class="title-rule"></div>
+      <ul class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          sectors.map((sector) => (
+            <li id={`sektor-${sector.slug}`} class="scroll-mt-32 flex gap-4 rounded-md border border-line bg-white p-6">
+              <Icon name={sector.icon} size={40} strokeWidth={1.35} class="shrink-0 text-navy" />
+              <div>
+                <h3 class="text-[18px] font-bold">{sector.name}</h3>
+                <p class="mt-1.5 text-[14.5px] leading-relaxed text-muted">{sector.description}</p>
+                {sector.href && (
+                  <a href={sector.href} class="link-arrow mt-3 text-[14px]">
+                    Detayları incele <Icon name="arrow-right" size={15} />
+                  </a>
+                )}
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- Neden Cedid + Kurumsal Bilgiler -->
+  <section class="bg-light py-14 lg:py-20" aria-label="Neden Cedid Ambalaj ve kurumsal bilgiler">
+    <div class="container-site grid gap-8 lg:grid-cols-2 lg:gap-12">
+      <div class="rounded-md bg-white p-7 lg:p-10">
+        <h2 class="text-[26px] font-bold lg:text-[30px]">Neden Cedid Ambalaj?</h2>
+        <ul class="mt-6 space-y-4">
+          {
+            reasons.map((reason) => (
+              <li class="flex items-start gap-3 text-[16px] text-ink">
+                <Icon name="check-circle" size={22} class="mt-0.5 shrink-0 text-bordo" />
+                {reason}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div class="rounded-md bg-navy-deep p-7 text-white lg:p-10">
+        <h2 class="text-[26px] font-bold text-white lg:text-[30px]">Kurumsal Bilgiler</h2>
+        <dl class="mt-6 divide-y divide-white/10 text-[15px]">
+          <div class="grid gap-1 py-3 sm:grid-cols-[150px_1fr]">
+            <dt class="text-white/60">Firma unvanı</dt>
+            <dd class="font-medium">{companyInfo.legalName}</dd>
+          </div>
+          <div class="grid gap-1 py-3 sm:grid-cols-[150px_1fr]">
+            <dt class="text-white/60">Slogan</dt>
+            <dd class="font-medium">{companyInfo.slogan}</dd>
+          </div>
+          <div class="grid gap-1 py-3 sm:grid-cols-[150px_1fr]">
+            <dt class="text-white/60">Faaliyet alanları</dt>
+            <dd class="font-medium">Ambalaj, temizlik, ofis ve kırtasiye, gıda (çay, kahve, şeker)</dd>
+          </div>
+          <div class="grid gap-1 py-3 sm:grid-cols-[150px_1fr]">
+            <dt class="text-white/60">Telefon</dt>
+            <dd class="flex flex-col gap-1 font-medium">
+              {companyInfo.phones.map((phone) => <a href={phone.href} class="hover:underline">{phone.display}</a>)}
+            </dd>
+          </div>
+          <div class="grid gap-1 py-3 sm:grid-cols-[150px_1fr]">
+            <dt class="text-white/60">E-posta</dt>
+            <dd class="font-medium">
+              <a href={`mailto:${companyInfo.email}`} class="hover:underline">{companyInfo.email}</a>
+            </dd>
+          </div>
+          <div class="grid gap-1 py-3 sm:grid-cols-[150px_1fr]">
+            <dt class="text-white/60">Instagram</dt>
+            <dd class="font-medium">
+              <a href={companyInfo.instagram.url} target="_blank" rel="noopener noreferrer" class="hover:underline">
+                {companyInfo.instagram.username}
+                <span class="sr-only">(yeni sekmede açılır)</span>
+              </a>
+            </dd>
+          </div>
+          {
+            companyInfo.address && (
+              <div class="grid gap-1 py-3 sm:grid-cols-[150px_1fr]">
+                <dt class="text-white/60">Adres</dt>
+                <dd class="font-medium">{companyInfo.address}</dd>
+              </div>
+            )
+          }
+        </dl>
+      </div>
+    </div>
+
+    <div class="container-site mt-10 flex flex-col gap-3 sm:flex-row">
+      <a href="/urunlerimiz" class="btn-primary">
+        Ürünlerimizi İnceleyin
+        <Icon name="arrow-right" size={17} />
+      </a>
+      <a href="/iletisim" class="btn-outline">İletişim</a>
+    </div>
+  </section>
+</SiteLayout>
