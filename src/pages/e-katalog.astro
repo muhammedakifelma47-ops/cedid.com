@@ -1,5 +1,6 @@
 ---
 import SiteLayout from "../layouts/SiteLayout.astro";
+import { Image } from "astro:assets";
 import PageHero from "../components/PageHero.astro";
 import ProductCategoryGrid from "../components/ProductCategoryGrid.astro";
 import Icon from "../components/Icon.astro";
@@ -28,28 +29,34 @@ import { getScene, catalogPdf } from "../lib/images";
           <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <h2 id="katalog-baslik" class="section-title">Cedid Ambalaj Ürün Kataloğu</h2>
-              <p class="mt-2 text-[15px] text-muted">Kataloğu bu sayfada görüntüleyebilir, yeni sekmede açabilir veya indirebilirsiniz.</p>
-            </div>
-            <div class="flex flex-col gap-3 sm:flex-row">
-              <a href={catalogPdf} target="_blank" rel="noopener" class="btn-outline">
-                <Icon name="external-link" size={17} />
-                Yeni sekmede aç
-              </a>
-              <a href={catalogPdf} download class="btn-primary">
-                <Icon name="download" size={17} />
-                Kataloğu indir (PDF)
-              </a>
+              <p class="mt-2 text-[15px] text-muted">Kataloğu yeni sekmede açabilir veya indirebilirsiniz.</p>
             </div>
           </div>
-          <div class="mt-8 overflow-hidden rounded-md border border-line bg-light">
-            <object data={`${catalogPdf}#view=FitH`} type="application/pdf" class="h-[75svh] min-h-[480px] w-full" aria-label="E-katalog PDF görüntüleyici">
-              <div class="flex flex-col items-center gap-4 p-10 text-center">
-                <p class="text-[15px] text-muted">Tarayıcınız PDF dosyasını bu sayfada görüntüleyemiyor.</p>
-                <a href={catalogPdf} target="_blank" rel="noopener" class="btn-primary">
-                  Kataloğu aç
+          <div class="relative isolate mt-8 flex min-h-[340px] items-end overflow-hidden rounded-md bg-navy-deep px-6 py-7 sm:min-h-[390px] sm:px-10 sm:py-9">
+            <Image
+              src={getScene("fabrika-hero")}
+              alt=""
+              aria-hidden="true"
+              class="absolute inset-0 -z-10 size-full object-cover"
+              loading="lazy"
+            />
+            <div class="absolute inset-0 -z-10 bg-gradient-to-r from-navy-deep/90 via-navy-deep/65 to-navy-deep/25"></div>
+            <div class="relative z-10 flex w-full flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+              <div class="max-w-md text-white">
+                <p class="text-[13px] font-bold uppercase tracking-[0.16em] text-white/75">Cedid Ambalaj</p>
+                <p class="mt-2 text-2xl font-bold leading-tight sm:text-3xl">Ürün kataloğumuzu keşfedin</p>
+              </div>
+              <div class="flex flex-col gap-3 sm:flex-row">
+                <a href={catalogPdf} target="_blank" rel="noopener" class="btn-outline-light">
+                  <Icon name="external-link" size={17} />
+                  Yeni sekmede aç
+                </a>
+                <a href={catalogPdf} download class="btn-primary">
+                  <Icon name="download" size={17} />
+                  E-Kataloğumuzu İndirebilirsiniz
                 </a>
               </div>
-            </object>
+            </div>
           </div>
         </div>
       ) : (
@@ -59,10 +66,6 @@ import { getScene, catalogPdf } from "../lib/images";
               <Icon name="file-text" size={28} strokeWidth={1.5} />
             </span>
             <h2 id="katalog-baslik" class="mt-6 text-[26px] font-bold lg:text-[30px]">Ürün gruplarını web kataloğumuzda inceleyin</h2>
-            <p class="mt-4 text-[16px] leading-relaxed text-muted">
-              PDF katalog şu anda bu sayfada yer almıyor. Tüm ürün gruplarımızı web kataloğumuz üzerinden inceleyebilir,
-              katalog talebiniz için bizimle iletişime geçebilirsiniz.
-            </p>
             <div class="mt-8 flex flex-col gap-3 sm:flex-row">
               <a href="/urunlerimiz" class="btn-primary">
                 Web Kataloğunu İncele

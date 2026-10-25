@@ -79,5 +79,5 @@ function findPublicFile(dir: string, baseNames: string[], extensions: string[]):
 
 /** Gerçek mağaza fotoğrafı: public/images/kurumsal/magaza.(jpg|webp|png) */
 export const storePhoto = findPublicFile("images/kurumsal", ["magaza"], ["jpg", "jpeg", "webp", "png"]);
-/** E-katalog PDF: public/katalog/cedid-e-katalog.pdf */
-export const catalogPdf = findPublicFile("katalog", ["cedid-e-katalog"], ["pdf"]);
+/** E-katalog PDF: public/katalog/Cedid_Ambalaj_12_Sayfa_Katalog.pdf */
+export const catalogPdf = findPublicFile("katalog", ["Cedid_Ambalaj_12_Sayfa_Katalog"], ["pdf"]);
