@@ -7,14 +7,15 @@ import ContactStrip from "../components/ContactStrip.astro";
 import Icon, { type IconKey } from "../components/Icon.astro";
 import { categoryHref, productHref, type Product } from "../data/catalog";
 import { pickProducts } from "../lib/pick";
-import { getScene, getProductImage, getGroupImage } from "../lib/images";
+import { getScene } from "../lib/images";
+import { categoryCardImages } from "../lib/category-images";
 
 interface Solution {
   id: string;
   icon: IconKey;
   title: string;
   description: string;
-  image: ImageMetadata;
+  image: ImageMetadata | string;
   imageAlt: string;
   products: Product[];
   link: { href: string; label: string };
@@ -27,7 +28,7 @@ const solutions: Solution[] = [
     title: "Ambalaj Ürünleri",
     description:
       "Paket servis, gel-al siparişleri ve mutfakta ürün saklama için gıda ambalajına uygun ürünler, poşet ve torbalar.",
-    image: getProductImage("ambalaj", "gida-ambalajina-uygun-urunler")!,
+    image: categoryCardImages.ambalaj,
     imageAlt: "Paket servis için yemek kapları (temsili görsel)",
     products: pickProducts("ambalaj", ["gida-ambalajina-uygun-urunler", "poset-cesitleri", "naylon-torbalar", "koli-ve-karton-kutular"]),
     link: { href: categoryHref("ambalaj"), label: "Ambalaj ürünleri" },
@@ -38,7 +39,7 @@ const solutions: Solution[] = [
     title: "Temizlik ve Hijyen Ürünleri",
     description:
       "Mutfak, servis alanı ve misafir lavaboları için bulaşık, yüzey temizliği, dezenfeksiyon ve el hijyeni ürünleri.",
-    image: getProductImage("temizlik", "bulasik-yikama-urunleri")!,
+    image: categoryCardImages.temizlik,
     imageAlt: "Mutfak lavabosunda bulaşık deterjanı (temsili görsel)",
     products: pickProducts("temizlik", [
       "bulasik-yikama-urunleri",
@@ -54,7 +55,7 @@ const solutions: Solution[] = [
     icon: "coffee",
     title: "Çay, Kahve ve Şeker",
     description: "Misafir ikramı ve servis için çay, kahve ve şeker ürün grupları.",
-    image: getGroupImage("kahve")!,
+    image: categoryCardImages.gida,
     imageAlt: "Kahve çekirdekleri, öğütülmüş kahve ve bir fincan kahve (temsili görsel)",
     products: pickProducts("gida", ["dokme-cay", "turk-kahvesi", "filtre-kahve", "kup-seker"]),
     link: { href: categoryHref("gida"), label: "Gıda ürünleri" },
@@ -64,7 +65,7 @@ const solutions: Solution[] = [
     icon: "pen",
     title: "Ofis ve Kırtasiye Ürünleri",
     description: "Sipariş takibi, kasa ve yönetim işleri için not, kalem ve yazıcı sarf ürünleri.",
-    image: getProductImage("ofis-kirtasiye", "bloknotlar")!,
+    image: categoryCardImages["ofis-kirtasiye"],
     imageAlt: "Masa üzerinde bloknot ve kalem (temsili görsel)",
     products: pickProducts("ofis-kirtasiye", ["bloknotlar", "kalemler", "zarf-ve-evrak-urunleri", "yazici-sarf-malzemeleri"]),
     link: { href: categoryHref("ofis-kirtasiye"), label: "Ofis ürünleri" },
@@ -75,8 +76,8 @@ const solutions: Solution[] = [
     title: "Günlük İşletme İhtiyaçları",
     description:
       "Servis ve mutfak düzeni için peçete, kağıt havlu, temizlik bezleri, süngerler ve çöp kovaları.",
-    image: getScene("profesyonel-mutfak"),
-    imageAlt: "Yoğun çalışan profesyonel bir restoran mutfağı (temsili görsel)",
+    image: categoryCardImages.temizlik,
+    imageAlt: "Temizlik ve hijyen ürünleri (temsili görsel)",
     products: pickProducts("temizlik", ["peceteler", "kagit-havlular", "temizlik-bezleri", "sungerler", "cop-kovalari"]),
     link: { href: categoryHref("temizlik"), label: "Kağıt ve temizlik ürünleri" },
   },
@@ -150,13 +151,17 @@ const solutions: Solution[] = [
               ]}
             >
               <div class:list={["relative aspect-[16/9] bg-light", index === solutions.length - 1 && "md:aspect-auto md:min-h-[300px]"]}>
-                <Image
-                  src={item.image}
-                  alt={item.imageAlt}
-                  widths={[480, 720, 960]}
-                  sizes="(min-width: 768px) 50vw, 100vw"
-                  class="absolute inset-0 h-full w-full object-cover"
-                />
+                  {typeof item.image === "string" ? (
+                    <img src={item.image} alt={item.imageAlt} loading="lazy" class="absolute inset-0 h-full w-full object-cover" />
+                  ) : (
+                    <Image
+                      src={item.image}
+                      alt={item.imageAlt}
+                      widths={[480, 720, 960]}
+                      sizes="(min-width: 768px) 50vw, 100vw"
+                      class="absolute inset-0 h-full w-full object-cover"
+                    />
+                  )}
                 <span class="absolute left-5 top-5 grid size-12 place-items-center rounded-full bg-bordo text-white shadow-card">
                   <Icon name={item.icon} size={22} />
                 </span>

@@ -1,17 +1,13 @@
 ---
-import { Image } from "astro:assets";
 import Icon from "../Icon.astro";
-import { getScene } from "../../lib/images";
 ---
 
 <section class="relative isolate overflow-hidden bg-navy-deep" aria-labelledby="hero-baslik">
-  <Image
-    src={getScene("depo-hero")}
-    alt="Yüksek raflı bir depoda paletler, koliler ve forklift (temsili görsel)"
-    widths={[640, 960, 1280, 1920, 2400]}
-    sizes="100vw"
-    priority
-    class="absolute inset-0 -z-20 h-full w-full -scale-x-100 object-cover object-[40%_center]"
+  <img
+    src="/images/cedid-magaza.png.png"
+    alt="Cedid Ambalaj mağazasının dış görünümü ve ürünleri"
+    fetchpriority="high"
+    class="absolute inset-0 -z-20 h-full w-full object-cover object-[40%_center]"
   />
   <div
     class="absolute inset-0 -z-10 bg-gradient-to-r from-navy-deep via-navy-deep/[0.86] to-navy-deep/25 lg:via-navy-deep/[0.72] lg:via-[38%] lg:to-transparent lg:to-[72%]"
@@ -32,8 +28,9 @@ import { getScene } from "../../lib/images";
         İşletmenizin <span class="block text-bordo-bright">Tedarik Gücü</span>
       </h1>
       <p class="mt-6 max-w-[540px] text-[17px] leading-relaxed text-white/85 lg:text-[18px]">
-        İhtiyacınız olan her ürün, tek bir güvencede. Cedid Ambalaj, işletmenizin tedarik süreçlerinde ihtiyaç duyduğu ürün
-        gruplarını tek noktada bir araya getirir.
+        İşletmenizin ihtiyaç duyduğu ambalaj, endüstriyel temizlik, gıda ve ofis sarf malzemelerini tek noktadan temin edin.
+        Cedid Ambalaj olarak geniş ürün yelpazemiz, güvenilir tedarik anlayışımız ve çözüm odaklı hizmetimizle işletmenizin
+        ihtiyaçlarına değer katıyoruz.
       </p>
       <div class="mt-9 flex flex-col gap-3 sm:flex-row sm:gap-4">
         <a href="/urunlerimiz" class="btn-primary px-7 py-[18px]">

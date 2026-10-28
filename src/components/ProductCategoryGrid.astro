@@ -1,8 +1,7 @@
 ---
-import { Image } from "astro:assets";
 import Icon from "./Icon.astro";
 import { categories, categoryHref } from "../data/catalog";
-import { getCategoryImage } from "../lib/images";
+import { categoryCardImages } from "../lib/category-images";
 
 interface Props {
   headingLevel?: "h2" | "h3";
@@ -22,11 +21,10 @@ const { headingLevel: Heading = "h3" } = Astro.props;
             class="group flex w-full flex-col overflow-hidden rounded-md bg-white shadow-card transition-shadow hover:shadow-panel"
           >
             <div class="relative aspect-[16/10] overflow-hidden bg-light">
-              <Image
-                src={getCategoryImage(category.slug)}
+              <img
+                src={categoryCardImages[category.slug]}
                 alt={`${category.name} (temsili görsel)`}
-                widths={[400, 640, 800]}
-                sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
+                loading="lazy"
                 class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
               />
             </div>

@@ -7,7 +7,8 @@ import ContactStrip from "../components/ContactStrip.astro";
 import Icon, { type IconKey } from "../components/Icon.astro";
 import { categoryHref } from "../data/catalog";
 import { pickProducts } from "../lib/pick";
-import { getScene, getProductImage, getCategoryImage, getGroupImage } from "../lib/images";
+import { getScene } from "../lib/images";
+import { categoryCardImages } from "../lib/category-images";
 
 const needs: { icon: IconKey; title: string; text: string }[] = [
   {
@@ -38,7 +39,7 @@ const rows = [
     title: "Ambalaj Ürünleri",
     description:
       "Koli, streç film, bant ve çemberleme ürünleri; üretimden sevkiyata kadar ürünlerin korunması, paketlenmesi ve paletlenmesi için kullanılır.",
-    image: getProductImage("ambalaj", "makine-tipi-strec-film")!,
+    image: categoryCardImages.ambalaj,
     imageAlt: "Streç sarma makinesinde sarılan palet (temsili görsel)",
     products: pickProducts("ambalaj", [
       "koli-ve-karton-kutular",
@@ -55,7 +56,7 @@ const rows = [
     title: "Endüstriyel Temizlik Ürünleri",
     description:
       "Üretim alanları, depolar ve ortak kullanım alanlarının düzenli temizliği için temizlik ürünleri, ekipmanlar ve hijyen malzemeleri.",
-    image: getScene("endustriyel-temizlik"),
+    image: categoryCardImages.temizlik,
     imageAlt: "Bir üretim tesisinde ekipman temizliği (temsili görsel)",
     products: pickProducts("temizlik", [
       "endustriyel-temizlik-urunleri",
@@ -72,7 +73,7 @@ const rows = [
     title: "Ofis ve Kırtasiye Ürünleri",
     description:
       "İdari ofisler, sevkiyat ve kalite birimlerinde kullanılan kağıt, dosyalama ve yazım gereçleri.",
-    image: getCategoryImage("ofis-kirtasiye"),
+    image: categoryCardImages["ofis-kirtasiye"],
     imageAlt: "Masa üzerinde çeşitli ofis ve kırtasiye ürünleri (temsili görsel)",
     products: pickProducts("ofis-kirtasiye", [
       "a4-fotokopi-kagidi",
@@ -88,7 +89,7 @@ const rows = [
     id: "cay-kahve-seker",
     title: "Çay, Kahve ve Şeker",
     description: "Yemekhane, dinlenme alanları ve toplantı odaları için temel içecek ve ikram ürünleri.",
-    image: getGroupImage("cay")!,
+    image: categoryCardImages.gida,
     imageAlt: "İnce belli bardakta çay (temsili görsel)",
     products: pickProducts("gida", ["dokme-cay", "demlik-poset-cay", "filtre-kahve", "kup-seker"]),
     link: { href: categoryHref("gida"), label: "Gıda ürünlerini incele" },

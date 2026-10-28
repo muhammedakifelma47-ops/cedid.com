@@ -50,7 +50,7 @@ export const navigationItems: NavItem[] = [
   { label: "İletişim", href: "/iletisim" },
 ];
 
-export const legalLinks = [{ label: "Gizlilik Bilgilendirmesi", href: "/gizlilik" }];
+export const legalLinks = [{ label: "Gizlilik Politikası", href: "/gizlilik" }];
 
 export type IconName =
   | "factory"

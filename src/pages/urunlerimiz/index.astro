@@ -1,12 +1,12 @@
 ---
-import { Image } from "astro:assets";
 import SiteLayout from "../../layouts/SiteLayout.astro";
 import PageHero from "../../components/PageHero.astro";
 import CategoryNavigation from "../../components/CategoryNavigation.astro";
 import ContactStrip from "../../components/ContactStrip.astro";
 import Icon from "../../components/Icon.astro";
 import { categories, categoryHref, getProductsByCategory } from "../../data/catalog";
-import { getCategoryImage, getScene } from "../../lib/images";
+import { getScene } from "../../lib/images";
+import { categoryCardImages } from "../../lib/category-images";
 ---
 
 <SiteLayout
@@ -41,11 +41,9 @@ import { getCategoryImage, getScene } from "../../lib/images";
               <li>
                 <article class="grid overflow-hidden rounded-md border border-line bg-white transition-shadow hover:shadow-card md:grid-cols-[minmax(0,340px)_1fr]">
                   <a href={href} class="relative block aspect-[16/10] overflow-hidden bg-light md:aspect-auto md:min-h-[250px]" tabindex="-1" aria-hidden="true">
-                    <Image
-                      src={getCategoryImage(category.slug)}
+                    <img
+                      src={categoryCardImages[category.slug]}
                       alt=""
-                      widths={[480, 680, 900]}
-                      sizes="(min-width: 768px) 340px, 100vw"
                       class="absolute inset-0 h-full w-full object-cover"
                     />
                   </a>
